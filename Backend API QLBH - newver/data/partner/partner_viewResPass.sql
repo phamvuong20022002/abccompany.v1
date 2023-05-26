@@ -1,0 +1,1 @@
+exec [dbo].[partner_viewResPass] @madt, @mach

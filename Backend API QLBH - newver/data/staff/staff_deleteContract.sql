@@ -1,0 +1,1 @@
+EXEC [dbo].[staff_deleteContract] @manv, @mahd

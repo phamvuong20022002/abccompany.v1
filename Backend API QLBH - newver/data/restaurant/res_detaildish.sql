@@ -1,0 +1,1 @@
+EXEC [dbo].[res_detaildish] @mach, @tenmon

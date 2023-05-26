@@ -1,0 +1,1 @@
+EXEC [dbo].[partner_Statistical_Bills_Status] @madt, @sonam

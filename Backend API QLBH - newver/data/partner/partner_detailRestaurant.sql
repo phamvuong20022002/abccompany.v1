@@ -1,0 +1,1 @@
+EXEC [dbo].[partner_detailRestaurant] @mach

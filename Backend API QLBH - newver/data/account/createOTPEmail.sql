@@ -1,0 +1,1 @@
+exec [dbo].[createOTPEmail] @email, @otpcode

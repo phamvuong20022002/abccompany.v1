@@ -1,0 +1,1 @@
+EXEC [dbo].[partner_Res_Revenue] @madt, @sonam, @sohang

@@ -1,0 +1,1 @@
+exec [dbo].[staff_getInfoOnePartner] @madt

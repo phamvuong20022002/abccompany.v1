@@ -1,0 +1,1 @@
+EXEC [dbo].[staff_statisticsPartnerRevenue] @manv, @madt, @date, @type

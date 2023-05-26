@@ -1,0 +1,1 @@
+exec [dbo].[checkOTPEmail] @email, @otpcode

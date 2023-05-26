@@ -1,0 +1,1 @@
+EXEC [dbo].[staff_updateInfomation] @manv, @cmnd, @hoten, @diachi, @stk, @email, @mk, @sdt 
