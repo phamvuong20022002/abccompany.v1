@@ -15,8 +15,11 @@
 <body>
     <div class="container">
         <header><img src="https://res.cloudinary.com/dayrqfwxo/image/upload/v1685024601/samples/logo/r1p7x3ybycgxxwwfhwhn.png" alt="" style="height: 220px; width: 220px;"></header>
-        <h4>Enter OTP</h4>
-        <p>We have sent you access code via SMS for mobile number verfication</p>
+        <h4>Nhập Mã OTP</h4>
+        <p>Chúng Tôi Đã Gửi Mã Xác Thực Đến Email/SĐT Xác Thực Của Bạn. Vui Lòng Kiểm Tra Hộp Thư/Tin Nhắn SMS!</p>
+        <!-- loader -->
+        <div hidden id="spinner" style="position:absolute; z-index: 1; background-color: rgba(236, 236, 236, 0.3);"></div>
+        <!-- /loader -->
         <form action="#">
             <div class="input-field">
                 <input type="number" />
@@ -24,10 +27,10 @@
                 <input type="number" disabled />
                 <input type="number" disabled />
             </div>
-            <button id="bnt-verify">Verify</button>
+            <button id="bnt-verify">Xác Thực</button>
         </form>
-        <div>Time left: <span id="timer"></span></div>
-        <p>Didn't receive the code <br> <a href="#">Resend code</a></p>
+        <div>Thời gian còn lại: <span id="timer"></span></div>
+        <p>Bạn không nhận được OTP? <br> <a href="#" onclick="resendOTP()">Gửi Lại Mã</a></p>
     </div>
 
     <!-- Sweet Alert2 -->

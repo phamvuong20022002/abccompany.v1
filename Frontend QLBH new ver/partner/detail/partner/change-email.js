@@ -55,14 +55,16 @@ if (text_connect !== undefined && text_connect !== null && checkAuthentication()
             return response.json()
         }).then((data) => {
             if(data[0].OTPCODE){
-                spinner.setAttribute("hidden", "");
+                spinner.setAttribute("hidden", ""); //loader
                 Swal.fire(
                     'Mã Xác Thực Đã Được Gửi Thành Công!',
                     'Mã xác thực đã được gửi đến email ' + data[0].EMAIL,
                     'success' 
                 ).then(() => {
+                    localStorage.setItem("JSON_CONNECT",JSON.stringify(dataReq));
                     localStorage.setItem("TEXT_CONNECT_2", text_connect)
                     localStorage.setItem("EMAIL_VERIFY", data[0].EMAIL)
+                    localStorage.setItem("TYPE_VERIFY_PARTNER", "CHANGEEMAIL")
                     location.href = "./otp/index.html";
                 })
             }else{

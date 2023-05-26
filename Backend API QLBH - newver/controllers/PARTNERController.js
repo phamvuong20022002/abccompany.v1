@@ -227,6 +227,7 @@ const verifypass = async (req, res) => {
         res.status(400).send(error.message);
     }
 }
+
 const changeEmail_Phone = async (req, res) => {
     try {
         let data = req.body;
@@ -236,10 +237,22 @@ const changeEmail_Phone = async (req, res) => {
         res.status(400).send(error.message);
     }
 }
+
+const partner_verifyEmail_Phone = async (req, res) => {
+    try {
+        let data = req.body;
+        const result = await PARTNERData.partner_verifyEmail_Phone(data);
+        res.send(result);
+    } catch (error) {
+        res.status(400).send(error.message);
+    }
+}
+
 module.exports = {
     partner_generalInfo, partner_Statistical_Cus, partner_NumCus_Type, partner_Res_Revenue,
     partner_Statistical_Bills_Status, partner_manageDishes, partner_detailDish, partner_updateDish,
     partner_manageRestaurants, partner_getInfo, partner_updateInfo, partner_changePassword, partner_addDishes,
     partner_detailRestaurant, partner_updateRestaurant, partner_createRestaurant, partner_changePassRes,
-    partner_viewResPass, partner_getContract, partner_changeAvatar, verifypass, changeEmail_Phone
+    partner_viewResPass, partner_getContract, partner_changeAvatar, verifypass, changeEmail_Phone,
+    partner_verifyEmail_Phone
 }

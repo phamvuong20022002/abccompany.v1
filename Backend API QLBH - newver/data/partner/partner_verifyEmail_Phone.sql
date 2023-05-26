@@ -1,0 +1,1 @@
+exec [dbo].[partner_verifyEmail_Phone] @madt, @email, @sdt, @type

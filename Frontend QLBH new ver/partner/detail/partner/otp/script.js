@@ -1,6 +1,7 @@
 const BASE_URL = readTextFile("../../../../assets/data_local.txt")
-let url_Verify_OTP = BASE_URL + "/partner/changeemail"
-
+let url_Verify_ChangeEmail = BASE_URL + "/partner/changeemail"
+let url_Verify_Email = BASE_URL + "/partner/verify/email"
+let url_Request_OTP = BASE_URL + "/account/verify/email"
 function Init(){
     const inputs = document.querySelectorAll("input"),
         button = document.querySelector("button");
@@ -62,7 +63,54 @@ function timer(remaining) {
     // Do timeout stuff here
     location.reload();
 }
-
+function getUrl(type){
+    if(type === "CHANGEEMAIL"){
+        return url_Verify_ChangeEmail
+    }
+    else if(type === "VERIFYEMAIL"){
+        return url_Verify_Email
+    }
+    return null
+}
+async function resendOTP(){
+    let dataReq = JSON.parse(localStorage.getItem("JSON_CONNECT"))
+    localStorage.setItem("JSON_CONNECT",null);
+    const spinner = document.getElementById("spinner"); //loader
+    spinner.removeAttribute('hidden'); //loader
+    await fetch(url_Request_OTP, {
+        method: "POST",
+        body: JSON.stringify(dataReq),
+        headers: {
+            "Content-Type": "application/json",
+            "auth-token": getCode1(),
+        },
+    }).then((response) => {
+        authenticatePrivateAPIChecking(response)
+        return response.json()
+    }).then((data) => {
+        spinner.setAttribute("hidden", ""); //loader
+        if(data[0].OTPCODE){
+            Swal.fire(
+                'Mã Xác Thực Đã Được Gửi Thành Công!',
+                'Mã xác thực đã được gửi đến email ' + data[0].EMAIL,
+                'success' 
+            ).then(() => {
+                localStorage.setItem("JSON_CONNECT",JSON.stringify(dataReq));
+                localStorage.setItem("TEXT_CONNECT_2", text_connect)
+                localStorage.setItem("EMAIL_VERIFY", data[0].EMAIL)
+                location.href = "./index.html";
+            })
+        }else{
+            Swal.fire(
+                'Gửi Mã Xác Thực Không Thành Công!',
+                'Vui lòng thực hiện xác thực lại Email',
+                'error' 
+            ).then(() => {
+                location.href = './index.html'
+            })
+        }
+    });
+}
 // ----------------MAIN ----------------
 let text_connect = localStorage.getItem("TEXT_CONNECT_2")
 localStorage.setItem("TEXT_CONNECT_2", null)
@@ -110,7 +158,9 @@ if (text_connect !== undefined && text_connect !== null && checkAuthentication()
                 "email" : localStorage.getItem("EMAIL_VERIFY"),
                 "otpcode": otp
             }
-            await fetch(url_Verify_OTP,{
+            const spinner = document.getElementById("spinner"); //loader
+            spinner.removeAttribute('hidden'); //loader
+            await fetch(getUrl(localStorage.getItem("TYPE_VERIFY_PARTNER")),{
                 method: "POST",
                 body: JSON.stringify(dataReq),
                 headers: {
@@ -121,7 +171,7 @@ if (text_connect !== undefined && text_connect !== null && checkAuthentication()
                 authenticatePrivateAPIChecking(response)
                 return response.json();
             }).then((data) => {
-                console.log(Object.keys(data[0])[0]);
+                spinner.setAttribute("hidden", ""); //loader
                 if(data[0].RESULT === '0'){
                     Swal.fire(
                         'Xác thực Email thất bại!',

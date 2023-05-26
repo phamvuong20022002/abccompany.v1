@@ -27,7 +27,8 @@ router.get('/viewrespass/id=:id&mach=:mach',verify.partner,PARTNERControll.partn
 router.get('/getcontract/:id',verify.partner,PARTNERControll.partner_getContract);  // private
 router.put('/changeavatar',verify.partner,PARTNERControll.partner_changeAvatar);  // private
 router.post('/verifypass/update',verify.partner,PARTNERControll.verifypass);  // private
-router.post('/changeemail',verify.partner,ACCController.verifyOTPEmail,PARTNERControll.changeEmail_Phone);  // private
+router.post('/changeemail',verify.partner,ACCController.verifyOTPEmail,PARTNERControll.changeEmail_Phone);  // private + OTP
+router.post('/verify/email',verify.partner,ACCController.verifyOTPEmail,PARTNERControll.partner_verifyEmail_Phone);  // private + OTP
 module.exports = {
     routes: router
 }

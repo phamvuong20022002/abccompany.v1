@@ -15,6 +15,13 @@ const SignIn = async (req, res, next) => {
 //send OTP verification Email Address
 const sendVerificationEmail = async (req, res) => {
     try {
+        if(req.body.email === null || (req.body.email).length === 0) {
+            let dataWrite = {
+                "OTPCODE": false,
+                "EMAIL": req.body.email,
+            }
+            throw res.status(400).send(dataWrite);
+        }
         // create otp
         const otp = `${Math.floor(1000 + Math.random() * 9000)}`
         let dataWrite = {
