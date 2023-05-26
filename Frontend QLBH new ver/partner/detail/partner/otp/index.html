@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ela Admin - HTML5 Admin Template</title>
+    <meta name="description" content="Ela Admin - HTML5 Admin Template">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="container">
+        <header><img src="https://res.cloudinary.com/dayrqfwxo/image/upload/v1685024601/samples/logo/r1p7x3ybycgxxwwfhwhn.png" alt="" style="height: 220px; width: 220px;"></header>
+        <h4>Enter OTP</h4>
+        <p>We have sent you access code via SMS for mobile number verfication</p>
+        <form action="#">
+            <div class="input-field">
+                <input type="number" />
+                <input type="number" disabled />
+                <input type="number" disabled />
+                <input type="number" disabled />
+            </div>
+            <button id="bnt-verify">Verify</button>
+        </form>
+        <div>Time left: <span id="timer"></span></div>
+        <p>Didn't receive the code <br> <a href="#">Resend code</a></p>
+    </div>
+
+    <!-- Sweet Alert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9.3.4/dist/sweetalert2.all.min.js"></script>
+    <!-- Cloudinary -->
+    <script src="https://upload-widget.cloudinary.com/global/all.js" type="text/javascript"></script>
+
+    <!-- MAIN SCRIPT -->
+    <script type="text/javascript" src="../../../../assets/js/checklogin.js"></script>
+    <script type="text/javascript" src="../../../../assets/js/readLocalFile.js"></script>
+    <script src="script.js"></script>
+</body>
+
+</html>

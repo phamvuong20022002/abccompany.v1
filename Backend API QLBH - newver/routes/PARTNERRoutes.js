@@ -4,6 +4,7 @@ const express = require('express');
 const PARTNERControll = require('../controllers/PARTNERController');
 const router = express.Router();
 const verify = require('../security/verifyToken');
+const ACCController = require('../controllers/ACCOUNTController');
 
 router.get('/generalinfo/:id',verify.partner,PARTNERControll.partner_generalInfo); // private
 router.get('/statiscalcustomerdata/id=:id&sonam=:sonam',verify.partner,PARTNERControll.partner_Statistical_Cus); // private
@@ -26,6 +27,7 @@ router.get('/viewrespass/id=:id&mach=:mach',verify.partner,PARTNERControll.partn
 router.get('/getcontract/:id',verify.partner,PARTNERControll.partner_getContract);  // private
 router.put('/changeavatar',verify.partner,PARTNERControll.partner_changeAvatar);  // private
 router.post('/verifypass/update',verify.partner,PARTNERControll.verifypass);  // private
+router.post('/changeemail',verify.partner,ACCController.verifyOTPEmail,PARTNERControll.changeEmail_Phone);  // private
 module.exports = {
     routes: router
 }

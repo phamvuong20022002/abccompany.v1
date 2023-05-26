@@ -326,6 +326,7 @@ async function changeEmail(){
                     )
                 }).then((data) => {
                     if(data[0].RESULT === '1'){
+                        localStorage.setItem('TEXT_CONNECT', data[0].TEXT_CONNECT)
                         location.href = './change-email.html'
                         return 1
                     }

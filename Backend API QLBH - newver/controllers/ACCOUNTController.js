@@ -45,8 +45,15 @@ const sendVerificationEmail = async (req, res) => {
 const verifyOTPEmail = async (req, res, next) =>{
     try {
         const data = req.body;
-        const result = await ACCOUNTData.verifyOTPEmail(data);
-        res.send(result);
+        await ACCOUNTData.verifyOTPEmail(data).then((result) =>{
+            if(result[0].RESULT === '1'){
+                next();
+            }
+            else{
+                res.send(result)
+            }
+        })
+        // res.send(result);
     }catch (error) {
         res.status(400).send(error.message);
     }

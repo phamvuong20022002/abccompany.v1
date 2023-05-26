@@ -307,14 +307,39 @@ const partner_changeAvatar = async(data) => {
     }
 }
 
-const verifypass = async(data) => {
+const verifypass = async (data) => {
+    try {
+        let pool = await sql.connect(config.sql);
+        const sqlQueries = await utils.loadSqlQueries('partner');
+        const result = await pool.request()
+            .input('madt', sql.Char(15), data.madt)
+            .input('pass', sql.Char(20), data.mk)
+            .query(sqlQueries.verifyPass);
+        
+        if(result.recordset[0].RESULT === '1') {
+            let num = Math.floor(Math.random() * 13) + 2
+            let key = Math.random().toString(num).slice(2)
+            result.recordset[0].TEXT_CONNECT = key + data["key"].substring( key.length, key.length + 5)
+        }
+        else{
+            result.recordset[0].TEXT_CONNECT = null
+        }
+        return result.recordset;
+    } catch (error) {
+        return error.message;
+    }
+}
+
+const changeEmail_Phone = async(data) => {
     try{
         let pool = await sql.connect(config.sql);
         const sqlQueries = await utils.loadSqlQueries('partner');
         const result = await pool.request()
                             .input('madt', sql.Char(15), data.madt)
-                            .input('pass', sql.Char(20), data.mk)
-                            .query(sqlQueries.verifyPass);
+                            .input('email', sql.Char(255), data.email)
+                            .input('type', sql.Char(15), data.type)
+                            .input('sdt', sql.Char(20), null)
+                            .query(sqlQueries.changeEmail_Phone);
         return result.recordset;
     }catch (error) {
         return error.message;
@@ -325,5 +350,5 @@ module.exports = {
     partner_Statistical_Bills_Status, partner_manageDishes, partner_detailDish, partner_updateDish,
     partner_manageRestaurants, partner_getInfo, partner_updateInfo, partner_changePassword, partner_addDishes,
     partner_detailRestaurant, partner_updateRestaurant, partner_createRestaurant, partner_changePassRes, 
-    partner_viewResPass, partner_getContract, partner_changeAvatar, verifypass
+    partner_viewResPass, partner_getContract, partner_changeAvatar, verifypass, changeEmail_Phone
 }
