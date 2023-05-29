@@ -1,0 +1,1 @@
+exec [dbo].[res_changeAvatarRes] @madt, @mach, @avatar

@@ -3,23 +3,10 @@ let MADT = null
 const type_detail = localStorage.getItem("type_detail");
 const BASE_URL = readTextFile("../../../../assets/data_local.txt")
 let url_Add = BASE_URL + "/partner/createrestaurant"
+let avatarDefault = "https://res.cloudinary.com/dayrqfwxo/image/upload/v1685382341/samples/default_image/ole3j6zhy63dfykv7ftx.jpg"
 let update_button_status = "off"
 update_button_status = localStorage.getItem("update_button_status")
 // -----data input ------
-//View pass
-function viewPass(){
-    
-    let eye = document.getElementById("view-pass")
-    if(eye.className === "fa fa-eye fa-lg"){
-        eye.className = "fa fa-eye-slash fa-lg"
-        let input = document.getElementById("pass-res")
-        input.setAttribute("type", "text")
-    }else{
-        eye.className = "fa fa-eye fa-lg"
-        let input = document.getElementById("pass-res")
-        input.setAttribute("type", "password")
-    }
-}
 
 //My profile
 function myProfile(){
@@ -133,10 +120,11 @@ function submit_button() {
         dataAdd["madt"] = MADT;
         dataAdd["mach"] = "CH" + MADT.substring(3, MADT.length) + randomString(2).toUpperCase();
         dataAdd["mota"] = document.getElementsByTagName("textarea")[0].value;
+        dataAdd["avatar"] = avatarDefault
         delete dataAdd[""];
-        console.log(dataAdd);
+
         FetchData(dataAdd)
-        // console.log(dataAdd)
+        console.log(dataAdd)
     }
 }
 

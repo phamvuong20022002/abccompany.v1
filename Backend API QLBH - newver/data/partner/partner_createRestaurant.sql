@@ -8,4 +8,5 @@ EXEC [dbo].[partner_createRestaurant] @madt ,
 	@tinhtrang ,
 	@diachi ,
 	@mota,
-	@mk
+	@mk,
+	@avatar

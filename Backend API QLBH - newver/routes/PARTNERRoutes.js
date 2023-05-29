@@ -4,6 +4,7 @@ const express = require('express');
 const PARTNERControll = require('../controllers/PARTNERController');
 const router = express.Router();
 const verify = require('../security/verifyToken');
+const verifyKey = require('../security/verifyKey');
 const ACCController = require('../controllers/ACCOUNTController');
 
 router.get('/generalinfo/:id',verify.partner,PARTNERControll.partner_generalInfo); // private
@@ -22,13 +23,14 @@ router.post('/adddishes',verify.partner,PARTNERControll.partner_addDishes);// pr
 router.get('/detailrestaurant/:id',PARTNERControll.partner_detailRestaurant);
 router.put('/updaterestaurant',verify.partner,PARTNERControll.partner_updateRestaurant);// private
 router.post('/createrestaurant',PARTNERControll.partner_createRestaurant);  // private
-router.put('/updaterespass',verify.partner,PARTNERControll.partner_changePassRes);  // private
+router.put('/updaterespass',verify.partner,verifyKey.VerifyKey,PARTNERControll.partner_changePassRes);  // private + key 
 router.get('/viewrespass/id=:id&mach=:mach',verify.partner,PARTNERControll.partner_viewResPass);  // private
 router.get('/getcontract/:id',verify.partner,PARTNERControll.partner_getContract);  // private
 router.put('/changeavatar',verify.partner,PARTNERControll.partner_changeAvatar);  // private
 router.post('/verifypass/update',verify.partner,PARTNERControll.verifypass);  // private
 router.post('/changeemail',verify.partner,ACCController.verifyOTPEmail,PARTNERControll.changeEmail_Phone);  // private + OTP
 router.post('/verify/email',verify.partner,ACCController.verifyOTPEmail,PARTNERControll.partner_verifyEmail_Phone);  // private + OTP
+router.put('/changeavatar/res',verify.partner,PARTNERControll.partner_changeAvatarRes);  // private
 module.exports = {
     routes: router
 }

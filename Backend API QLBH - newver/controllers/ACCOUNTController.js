@@ -69,15 +69,7 @@ const verifyOTPEmail = async (req, res, next) =>{
 
 const sendVerificationSMS = async (req, res, next) =>{
     try {
-        // const data = req.body;
-        // await ACCOUNTData.verifyOTPEmail(data).then((result) =>{
-        //     if(result[0].RESULT === '1'){
-        //         next();
-        //     }
-        //     else{
-        //         res.send(result)
-        //     }
-        // })
+       
         const result = await utils.sendSMS()
         res.send(result)
     }catch (error) {

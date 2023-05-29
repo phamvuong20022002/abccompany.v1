@@ -7,6 +7,8 @@ let url_Display = BASE_URL + "/partner/detailrestaurant/"
 let url_Update = BASE_URL + "/partner/updaterestaurant"
 let url_ViewPass = BASE_URL + "/partner/viewrespass/"
 let url_ChangePass = BASE_URL + "/partner/updaterespass"
+let url_VerifyPass = BASE_URL + "/partner/verifypass/update"
+let url_ChangeAvatarRes = BASE_URL + "/partner/changeavatar/res"
 let update_button_status = "off"
 update_button_status = localStorage.getItem("update_button_status")
 // -----data input ------
@@ -140,14 +142,23 @@ async function form_Display(){
                 input[i].setAttribute("value", data[0][keys[i]])
                 if(input[i].name === "mk"){
                     input[i].value = "*************"
-                    document.getElementById("view-pass").onclick = function(){viewPass(data[0].MACUAHANG, data[0].MASOTHUE)}
+                    document.getElementById("view-pass").onclick = function(){verifyPass(data[0].MACUAHANG, data[0].MASOTHUE)}
                 }
                 if(i === input.length - 1){
                     let textarea = document.getElementsByTagName("textarea")
                     textarea[0].value = data[0][keys[i]]
                 }
             }
+            //avatar
+            let dataUpdate = {
+                "madt": data[0].MASOTHUE,
+                "mach": data[0].MACUAHANG,
+            }
+            document.getElementById("photo").setAttribute("src",data[0].AVATAR)
+            css_Avatar(changeAvatar(dataUpdate, url_ChangeAvatarRes, false));
+
             spinner.setAttribute("hidden", ""); //loader
+            
             document.getElementById("login-res").removeAttribute("hidden")
             document.getElementById("login-res").onclick = function(){loginToRes(data[0].MACUAHANG, data[0].MASOTHUE)}
         }
@@ -160,8 +171,67 @@ async function form_Display(){
         }
     })
 }
+async function verifyPass(MACH,MADT) {
+    await Swal.fire({
+        title: 'Nhập Mật Khẩu Để Xác Nhận',
+        html:
+            '<label style="float: left">Mật Khẩu </label>' +
+            '<input id="pass" class="swal2-input" type = "password" >',
+        inputAttributes: {
+            autocapitalize: 'off'
+        },
+        showCancelButton: true,
+        confirmButtonText: 'Xác Nhận',
+        showLoaderOnConfirm: true,
+        preConfirm: () => {
+            let dataUpdate = {
+                "madt": MADT,
+                "mk": document.getElementById('pass').value,
+            }
 
-async function viewPass(MACH,MADT){
+            return fetch(url_VerifyPass, {
+                method: "POST",
+                body: JSON.stringify(dataUpdate),
+                headers: {
+                    "Content-Type": "application/json",
+                    "auth-token": getCode1(),
+                },
+            })
+                .then(response => {
+                    authenticatePrivateAPIChecking(response);
+                    return response.json()
+                })
+                .catch(error => {
+                    Swal.showValidationMessage(
+                        `Request failed: ${error}`
+                    )
+                }).then((data) => {
+                    if (data[0].RESULT === '1') {
+                        return data[0].TEXT_CONNECT
+                    }
+                    else {
+                        return 0
+                    }
+                })
+        },
+        allowOutsideClick: () => !Swal.isLoading()
+    }).then((result) => {
+        if (result.dismiss === 'cancel' || result.dismiss === 'backdrop') {
+            return
+        }
+        if (!result.value) {
+            Swal.fire(
+                'Xác Nhận Không Thành Công!',
+                'Mật Khẩu Không Chính Xác',
+                'error',
+            )
+        }
+        else {
+            viewPass(MACH,MADT, result.value)
+        }
+    })
+}
+async function viewPass(MACH,MADT, text_connect){
     await fetch(url_ViewPass + "id=" + MADT + "&mach=" + MACH,{
         headers: {
             "auth-token": getCode1()
@@ -239,6 +309,7 @@ async function viewPass(MACH,MADT){
                                     headers: {
                                         "Content-Type": "application/json",
                                         "auth-token": getCode1(),
+                                        "key": text_connect
                                     },
                                 }).then((response) => {
                                     authenticatePrivateAPIChecking(response);
@@ -478,7 +549,6 @@ if(checkAuthentication()){
     Init_DoughutChart()
     Init_BarChart()
     Init_LineChart()
-    css_Avatar("myWidget")
 }
 else{
     location.href = '../../../page-login.html'

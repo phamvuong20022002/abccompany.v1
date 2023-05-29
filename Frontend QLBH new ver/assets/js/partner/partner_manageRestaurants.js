@@ -123,7 +123,7 @@ function Display_Restaurant(data) {
 
         // image 
         const img = document.createElement('img')
-        img.setAttribute('src','../images/restaurants/' + 'res_'+ (Math.floor(Math.random() * 12) + 1).toString() +'.jpg')
+        img.setAttribute('src',oneData.AVATAR)
         img.setAttribute('alt','')
         //description
         const info =  document.createElement('div')
