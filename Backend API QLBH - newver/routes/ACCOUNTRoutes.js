@@ -8,6 +8,7 @@ const verify = require('../security/verifyToken');
 router.post('/signin',ACCControll.SignIn);
 router.post('/verify/email',verify.accountEmail,ACCControll.sendVerificationEmail);
 router.post('/verify/email/verifyotp',verify.accountEmail,ACCControll.verifyOTPEmail);
+router.post('/verify/sms',verify.accountEmail,ACCControll.sendVerificationSMS);
 module.exports = {
     routes: router
 }

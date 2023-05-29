@@ -11,6 +11,28 @@ let update_button_status = "off"
 update_button_status = localStorage.getItem("update_button_status")
 // -----data input ------
 
+// css for avatar
+function css_Avatar(myWidget){
+    // show update icon on avatar
+    let avatar = document.querySelector(".avatar")
+    //if hover on avatar
+    avatar.addEventListener("mouseenter", function (e) {
+        document.getElementById("uploadBnt").removeAttribute("hidden")
+    })
+    //if hover out avatar
+    avatar.addEventListener("mouseleave", function (e) {
+        document.getElementById("uploadBnt").setAttribute("hidden", "")
+    })
+    //if click on change icon
+    document.querySelector("#uploadBnt").addEventListener(
+        "click",
+        function () {
+            myWidget.open();
+        },
+        false
+    );
+}
+
 //update button
 function update_button() {
     localStorage.setItem("update_button_status", "on")
@@ -37,7 +59,6 @@ async function updateData(dataRep){
         return response.json();
     }).then((data) => {
         const keys = Object.keys(data[0])
-        console.log("respone:", keys[0]);
         if (keys[0] === "ERROR") {
             //alert error
             Swal.fire({
@@ -102,25 +123,40 @@ async function form_Display(){
     }
 
     //get data from database
+    document.getElementById("login-res").setAttribute("hidden","")
+    const spinner = document.getElementById("spinner"); //loader
+    spinner.removeAttribute('hidden'); //loader
     await fetch(url_Display + oneRestaurant).then((response) =>{
         return response.json()
     }).then((data) =>{
-        //display
-        let input = document.getElementsByTagName("input")
         const keys = Object.keys(data[0])
-        for(let i = input.length - 2; i > 0; i--){
-            if(i === 1 || i === 2 || i === 5 || i === 8){
-                input[i] = input[i].setAttribute("readonly", "")
+        if(keys[0] !== "ERROR"){
+            //display
+            let input = document.getElementsByClassName("form-control input")
+            for(let i = 0; i < input.length; i++){
+                if(i === 0 || i === 1 || i === 4 || i === 7){
+                    input[i] = input[i].setAttribute("readonly", "")
+                }
+                input[i].setAttribute("value", data[0][keys[i]])
+                if(input[i].name === "mk"){
+                    input[i].value = "*************"
+                    document.getElementById("view-pass").onclick = function(){viewPass(data[0].MACUAHANG, data[0].MASOTHUE)}
+                }
+                if(i === input.length - 1){
+                    let textarea = document.getElementsByTagName("textarea")
+                    textarea[0].value = data[0][keys[i]]
+                }
             }
-            input[i].setAttribute("value", data[0][keys[i - 1]])
-            if(input[i].name === "mk"){
-                input[i].value = "*************"
-                document.getElementById("view-pass").onclick = function(){viewPass(data[0].MACUAHANG, data[0].MASOTHUE)}
-            }
-            if(i === input.length - 3){
-                let textarea = document.getElementsByTagName("textarea")
-                textarea[0].value = data[0][keys[i]]
-            }
+            spinner.setAttribute("hidden", ""); //loader
+            document.getElementById("login-res").removeAttribute("hidden")
+            document.getElementById("login-res").onclick = function(){loginToRes(data[0].MACUAHANG, data[0].MASOTHUE)}
+        }
+        else{
+            Swal.fire(
+                'Tải Thông Tin Cửa Hàng Thất Bại',
+                data[0].ERROR,
+                'error',
+            )
         }
     })
 }
@@ -134,102 +170,315 @@ async function viewPass(MACH,MADT){
         authenticatePrivateAPIChecking(response)
         return response.json();
     }).then((data) => {
-        if(Object.keys(data[0]) === "ERROR") {
-            console.log(Object.keys(data[0]))
+        if(Object.keys(data[0])[0] === "ERROR") {
+            Swal.fire(
+                "Không Thể Load Mật Khẩu",
+                data[0].ERROR,
+                'error',
+            ).then(()=>{
+                location.reload();
+            })
         }
-        let pass = data[0].MK
-        Swal.fire({
-            title: 'Hiển Thị Mật Khẩu',
-            icon: 'info',
-            html:
-            '<label> <strong>Mật khẩu: </strong> </label> ' +
-            '<input value = '+ pass + ' readonly="" style=";"</input>' ,
-            showCloseButton: true,
-            showCancelButton: true,
-            focusConfirm: false,
-            confirmButtonText:
-            '<i class="fa fa-unlock-alt"> Đổi Mật Khẩu</i> ',
-            cancelButtonText:
-            '<i class="fa fa-mail-reply"> Quay lại</i>',
-        }).then((result) => {
-            if(result.value){
-                Swal.fire({
-                    title: 'Submit your Github username',
-                    html:
-                    '<div style="position: relative; float:left;"><label> <strong>Mật khẩu Mới: </strong> </label> ' +
-                    '<input id="new-pass" name="newpass" style="position: relative; left: 50px"></div>'+
-                    '<div style="position: relative; float:left;"><label> <strong>Nhập lại Mật khẩu: </strong> </label> ' +
-                    '<input id="re-type-pass" name="retypepass" style="position: relative;left: 10px"></div>',
-                    
-                    showCloseButton: true,
-                    showCancelButton: true,
-                    confirmButtonText:'Cập Nhật',
-                    cancelButtonText: 'Huỷ Bỏ',
-                })
-                .then(async (result) => {
-                    if(result.value){
-                        let newPass = document.getElementById("new-pass").value
-                        let reTypePass = document.getElementById("re-type-pass").value
-                        if(newPass.length === 0){
-                            Swal.fire({
-                                title: 'Đổi Mật Khẩu Không Thành Công!',
-                                icon: 'error',
-                                text: 'Vui lòng nhập mật khẩu mới vào ô Mật Khẩu Mới'
-                            })
-                        }
-                        else if(reTypePass !== newPass){
-                            Swal.fire({
-                                title: 'Đổi Mật Khẩu Không Thành Công!',
-                                icon: 'error',
-                                text: 'Mật khẩu nhập lại không khớp'
-                            })
-                        }
-                        else {
-                            let data_Req = {
-                                "madt" : MADT,
-                                "mach": MACH,
-                                "newpass" : reTypePass
-                            }
-                            await fetch(url_ChangePass,{
-                                method: "PUT",
-                                body: JSON.stringify(data_Req),
-                                headers: {
-                                    "Content-Type": "application/json",
-                                    "auth-token": getCode1(),
-                                },
-                            }).then((response) => {
-                                authenticatePrivateAPIChecking(response);
-                                return response.json();
-                            }).then((data) =>{
-                                if(Object.keys(data[0])[0] === "ERROR"){
-                                    Swal.fire({
+        else {
+            let pass = data[0].MK
+            Swal.fire({
+                title: 'Hiển Thị Mật Khẩu',
+                icon: 'info',
+                html:
+                '<label> <strong>Mật khẩu: </strong> </label> ' +
+                '<input value = '+ pass + ' readonly="" style=";"</input>' ,
+                showCloseButton: true,
+                showCancelButton: true,
+                focusConfirm: false,
+                confirmButtonText:
+                '<i class="fa fa-unlock-alt"> Đổi Mật Khẩu</i> ',
+                cancelButtonText:
+                '<i class="fa fa-mail-reply"> Quay lại</i>',
+            }).then((result) => {
+                if(result.value){
+                    Swal.fire({
+                        title: 'Submit your Github username',
+                        html:
+                        '<div style="position: relative; float:left;"><label> <strong>Mật khẩu Mới: </strong> </label> ' +
+                        '<input id="new-pass" name="newpass" style="position: relative; left: 50px"></div>'+
+                        '<div style="position: relative; float:left;"><label> <strong>Nhập lại Mật khẩu: </strong> </label> ' +
+                        '<input id="re-type-pass" name="retypepass" style="position: relative;left: 10px"></div>',
+                        
+                        showCloseButton: true,
+                        showCancelButton: true,
+                        confirmButtonText:'Cập Nhật',
+                        cancelButtonText: 'Huỷ Bỏ',
+                    })
+                    .then(async (result) => {
+                        if(result.value){
+                            let newPass = document.getElementById("new-pass").value
+                            let reTypePass = document.getElementById("re-type-pass").value
+                            if(newPass.length === 0){
+                                Swal.fire({
                                     title: 'Đổi Mật Khẩu Không Thành Công!',
                                     icon: 'error',
-                                    text: data[0].ERROR,
-                                })}
-                                else {
-                                    Swal.fire({
-                                    title: 'Đổi Mật Khẩu Thành Công!',
-                                    icon: 'success',
-                                    text: data[0].RESUST,
-                                    })
+                                    text: 'Vui lòng nhập mật khẩu mới vào ô Mật Khẩu Mới'
+                                })
+                            }
+                            else if(reTypePass !== newPass){
+                                Swal.fire({
+                                    title: 'Đổi Mật Khẩu Không Thành Công!',
+                                    icon: 'error',
+                                    text: 'Mật khẩu nhập lại không khớp'
+                                })
+                            }
+                            else {
+                                let data_Req = {
+                                    "madt" : MADT,
+                                    "mach": MACH,
+                                    "newpass" : reTypePass
                                 }
-                                
-                            })
+                                await fetch(url_ChangePass,{
+                                    method: "PUT",
+                                    body: JSON.stringify(data_Req),
+                                    headers: {
+                                        "Content-Type": "application/json",
+                                        "auth-token": getCode1(),
+                                    },
+                                }).then((response) => {
+                                    authenticatePrivateAPIChecking(response);
+                                    return response.json();
+                                }).then((data) =>{
+                                    if(Object.keys(data[0])[0] === "ERROR"){
+                                        Swal.fire({
+                                        title: 'Đổi Mật Khẩu Không Thành Công!',
+                                        icon: 'error',
+                                        text: data[0].ERROR,
+                                    })}
+                                    else {
+                                        Swal.fire({
+                                        title: 'Đổi Mật Khẩu Thành Công!',
+                                        icon: 'success',
+                                        text: data[0].RESUST,
+                                        })
+                                    }
+                                    
+                                })
+                            }
                         }
-                    }
-                })
-            }
-        })
+                    })
+                }
+            })
+        }
     })
     
+}
+
+async function loginToRes(MACH, MADT){
+    console.log(MACH, MADT)
+}
+// ----------------Base Infomation-----------------------------
+function Init_RaderChart() {
+    //radar chart
+    var ctx = document.getElementById("radarChart");
+    ctx.height = 160;
+    var myChart = new Chart(ctx, {
+        type: 'radar',
+        data: {
+            labels: ["Eating", "Drinking", "Sleeping", "Designing", "Coding", "Cycling", "Running"],
+            datasets: [
+                {
+                    label: "My First dataset",
+                    data: [65, 70, 66, 45, 5, 55, 40],
+                    borderColor: "rgba(255, 174, 66, 1)",
+                    borderWidth: "3",
+                    backgroundColor: "rgba(255, 174, 66, 0.5)"
+                },
+                {
+                    label: "My Second dataset",
+                    data: [28, 5, 55, 19, 63, 27, 68],
+                    borderColor: "rgba(13, 152, 168, 1)",
+                    borderWidth: "3",
+                    backgroundColor: "rgba(13, 152, 168, 0.5)"
+                },
+                {
+                    label: "My Third dataset",
+                    data: [15, 50, 100, 50, 25, 27, 45],
+                    borderColor: "rgba(255, 87, 51, 1)",
+                    borderWidth: "3",
+                    backgroundColor: "rgba(255, 87, 51, 0.5)"
+                }
+            ]
+        },
+        options: {
+            legend: {
+                position: 'left'
+            },
+            scale: {
+                ticks: {
+                    beginAtZero: true,
+                }
+            }
+        }
+    });
+}
+function Init_DoughutChart() {
+    //doughut chart
+    var ctx = document.getElementById("doughutChart");
+    ctx.height = 150;
+    var myChart = new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+            datasets: [{
+                data: [35, 40, 20, 5],
+                backgroundColor: [
+                    "RGBA(54, 162, 235, 1)",
+                    "RGBA(255, 99, 132, 1)",
+                    "RGBA(75, 192, 192, 1)",
+                    "rgba(0,0,0,0.07)"
+                ],
+                hoverBackgroundColor: [
+                    "RGBA(54, 162, 235, 0.8)",
+                    "RGBA(255, 99, 132, 0.8)",
+                    "RGBA(75, 192, 192, 0.8)",
+                    "rgba(0,0,0,0.07)"
+                ]
+
+            }],
+            labels: [
+                "Đơn Hàng Chờ",
+                "Đơn Hàng Đã Huỷ",
+                "Đơn Hàng Đã Giao",
+                "Đơn Hàng Khác"
+            ]
+        },
+        options: {
+            responsive: true,
+            legend: {
+                position: 'left'
+            },
+        }
+    });
+}
+function Init_BarChart() {
+    //bar chart
+    var ctx = document.getElementById("barChart");
+    //    ctx.height = 200;
+    var myChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: ["Ngày 1", "Ngày 2", "Ngày 3", "Ngày 4", "Ngày 5", "Ngày 6", "Ngày 7"],
+            datasets: [
+                {
+                    label: "Số Lượng Khách Hàng",
+                    data: [65, 59, 80, 81, 56, 55, 45],
+                    borderColor: "rgba(0, 194, 146, 0.9)",
+                    borderWidth: "0",
+                    backgroundColor: "RGBA(52, 152, 219, 0.8)"
+                },
+                {
+                    label: "Số Lượng Đơn Hàng",
+                    data: [28, 48, 40, 19, 86, 27, 76],
+                    borderColor: "rgba(0,0,0,0.09)",
+                    borderWidth: "0",
+                    backgroundColor: "RGBA(231, 76, 60, 0.8)"
+                }
+            ]
+        },
+        options: {
+            legend: {
+                position: 'left'
+            },
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero: true
+                    }
+                }]
+            }
+        }
+    });
+}
+function Init_LineChart() {
+    //Sales chart
+    var ctx = document.getElementById("sales-chart");
+    ctx.height = 150;
+    var myChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: ["2012", "2013", "2014", "2015", "2016", "2017", "2018"],
+            type: 'line',
+            defaultFontFamily: 'Montserrat',
+            datasets: [{
+                label: "Doanh Thu",
+                data: [50, 50, 40, 80, 35, 99, 80],
+                backgroundColor: 'transparent',
+                borderColor: 'rgba(40,167,69,0.75)',
+                borderWidth: 3,
+                pointStyle: 'circle',
+                pointRadius: 6,
+                pointBorderColor: 'transparent',
+                pointBackgroundColor: 'rgba(40,167,69,0.75)',
+            }]
+        },
+        options: {
+            responsive: true,
+
+            tooltips: {
+                mode: 'index',
+                titleFontSize: 12,
+                titleFontColor: '#000',
+                bodyFontColor: '#000',
+                backgroundColor: '#fff',
+                titleFontFamily: 'Montserrat',
+                bodyFontFamily: 'Montserrat',
+                cornerRadius: 3,
+                intersect: true,
+            },
+            legend: {
+                display: true,
+                labels: {
+                    usePointStyle: true,
+                    fontFamily: 'Montserrat',
+                },
+            },
+            scales: {
+                xAxes: [{
+                    display: true,
+                    gridLines: {
+                        display: true,
+                        drawBorder: true,
+                    },
+                    scaleLabel: {
+                        display: true,
+                        labelString: 'Month'
+                    }
+                }],
+                yAxes: [{
+                    display: true,
+                    gridLines: {
+                        display: true,
+                        drawBorder: false
+                    },
+                    scaleLabel: {
+                        display: true,
+                        labelString: 'Doanh Thu'
+                    }
+                }]
+            },
+            title: {
+                display: false,
+            }
+        }
+    });
 }
 // ----------------MAIN ----------------
 if(checkAuthentication()){
     oneRestaurant = localStorage.getItem("oneRestaurant")
     // set corner avatar
     document.getElementsByClassName("user-avatar rounded-circle")[0].setAttribute("src",localStorage.getItem("AVATAR"))
-    form_Display()
+    form_Display() // form 
+    // --------Chart-------------
+    Init_RaderChart()
+    Init_DoughutChart()
+    Init_BarChart()
+    Init_LineChart()
+    css_Avatar("myWidget")
 }
 else{
     location.href = '../../../page-login.html'

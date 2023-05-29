@@ -1,6 +1,7 @@
 'use strict';
 const nodemailer = require('nodemailer');
 
+
 //config email account 
 let transporter = nodemailer.createTransport({
     host:"smtp.gmail.com",
@@ -25,7 +26,11 @@ const sendEmail = async (mailOptions) =>{
         throw error
     }
 }
+// --------------------------SEND SMS---------------------------------
+async function sendSMS() {
+    
+}
 
 module.exports = {
-    sendEmail
+    sendEmail, sendSMS
 }

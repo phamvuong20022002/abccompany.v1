@@ -457,24 +457,28 @@ function changeAvatar() {
         }
     })
 
-    // show update icon on avatar
-    let avatar = document.querySelector(".avatar")
-    //if hover on avatar
-    avatar.addEventListener("mouseenter", function (e) {
-        document.getElementById("uploadBnt").removeAttribute("hidden")
-    })
-    //if hover out avatar
-    avatar.addEventListener("mouseleave", function (e) {
-        document.getElementById("uploadBnt").setAttribute("hidden", "")
-    })
-    //if click on change icon
-    document.querySelector("#uploadBnt").addEventListener(
-        "click",
-        function () {
-            myWidget.open();
-        },
-        false
-    );
+    css_Avatar(myWidget)
+}
+
+function css_Avatar(myWidget){
+     // show update icon on avatar
+     let avatar = document.querySelector(".avatar")
+     //if hover on avatar
+     avatar.addEventListener("mouseenter", function (e) {
+         document.getElementById("uploadBnt").removeAttribute("hidden")
+     })
+     //if hover out avatar
+     avatar.addEventListener("mouseleave", function (e) {
+         document.getElementById("uploadBnt").setAttribute("hidden", "")
+     })
+     //if click on change icon
+     document.querySelector("#uploadBnt").addEventListener(
+         "click",
+         function () {
+             myWidget.open();
+         },
+         false
+     );
 }
 
 

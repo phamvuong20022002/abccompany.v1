@@ -14,7 +14,7 @@ const SignIn = async (data) => {
                         .query(sqlQueries.SignIn);
         let check = Object.keys(result.recordset[0]).toString();
         if (check === "RESULT") {
-            let token = jwt.sign({username: data.username}, config.privateToken, {expiresIn: "2h",});
+            let token = jwt.sign({username: result.recordset[0].RESULT}, config.privateToken, {expiresIn: "2h",});
             result.recordset[0]["auth-token"] = token;
             result.recordset[0]["login-status"] = true;
         }else {

@@ -3,6 +3,7 @@
 const ACCOUNTData = require('../data/account')
 const utils = require('./utils')
 
+
 const SignIn = async (req, res, next) => {
     try {
         const data = req.body;
@@ -22,7 +23,7 @@ const sendVerificationEmail = async (req, res) => {
             }
             throw res.status(400).send(dataWrite);
         }
-        // create otp
+        // generate otp
         const otp = `${Math.floor(1000 + Math.random() * 9000)}`
         let dataWrite = {
             "otpcode": otp,
@@ -65,6 +66,24 @@ const verifyOTPEmail = async (req, res, next) =>{
         res.status(400).send(error.message);
     }
 }
+
+const sendVerificationSMS = async (req, res, next) =>{
+    try {
+        // const data = req.body;
+        // await ACCOUNTData.verifyOTPEmail(data).then((result) =>{
+        //     if(result[0].RESULT === '1'){
+        //         next();
+        //     }
+        //     else{
+        //         res.send(result)
+        //     }
+        // })
+        const result = await utils.sendSMS()
+        res.send(result)
+    }catch (error) {
+        res.status(400).send(error.message);
+    }
+}
 module.exports = {
-    SignIn, sendVerificationEmail, verifyOTPEmail
+    SignIn, sendVerificationEmail, verifyOTPEmail, sendVerificationSMS
 }
