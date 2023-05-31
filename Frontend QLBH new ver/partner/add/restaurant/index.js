@@ -38,7 +38,8 @@ async function FetchData(dataRep){
         body: JSON.stringify(dataRep),
         headers: {
             "Content-Type": "application/json",
-            "auth-token": getCode1()
+            "auth-token": getCode1(),
+            "role": "DT",
         },
     }).then((response) => {
         authenticatePrivateAPIChecking(response)
@@ -104,6 +105,19 @@ function getData(requireFields) {
         }
     }
     return obj
+}
+
+//click view pass
+function viewPass(){
+    let icon_eye = document.getElementById("view-pass")
+    if(icon_eye.className === "fa fa-eye fa-lg"){
+        icon_eye.className = "fa fa-eye-slash fa-lg"
+        document.getElementById("pass-res").setAttribute("type", "text")
+    }
+    else{
+        icon_eye.className = "fa fa-eye fa-lg"
+        document.getElementById("pass-res").setAttribute("type", "password")
+    }
 }
 
 //click update button

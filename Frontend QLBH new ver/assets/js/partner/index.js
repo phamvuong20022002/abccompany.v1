@@ -121,7 +121,8 @@ function DoughnutchartInit(dataInit) {
 async function Display_Widgets() {
     await fetch(url_displayWidgets + MADT, {
         headers: {
-            "auth-token": getCode1()
+            "auth-token": getCode1(),
+            "role": "DT",
         }
     })
         .then((response) => {
@@ -299,6 +300,7 @@ async function trafficChartData() {
         method: "GET",
         headers: {
             "auth-token": getCode1(),
+            "role": "DT",
         },
     }).then((response) => {
         authenticatePrivateAPIChecking(response)
@@ -343,6 +345,7 @@ async function doughnutchartData() {
         method: "GET",
         headers: {
             "auth-token": getCode1(),
+            "role": "DT",
         },
     }).then((response) => {
         authenticatePrivateAPIChecking(response)
@@ -375,6 +378,7 @@ async function Table_Display() {
         method: "GET",
         headers: {
             "auth-token": getCode1(),
+            "role": "DT",
         },
     }).then((response) => {
         authenticatePrivateAPIChecking(response);

@@ -55,6 +55,7 @@ async function updateData(dataRep){
         headers: {
             "Content-Type": "application/json",
             "auth-token": getCode1(),
+            "role": "DT"
         },
     }).then((response) => {
         authenticatePrivateAPIChecking(response)
@@ -155,7 +156,7 @@ async function form_Display(){
                 "mach": data[0].MACUAHANG,
             }
             document.getElementById("photo").setAttribute("src",data[0].AVATAR)
-            css_Avatar(changeAvatar(dataUpdate, url_ChangeAvatarRes, false));
+            css_Avatar(changeAvatar(dataUpdate, url_ChangeAvatarRes, false, "DT"));
 
             spinner.setAttribute("hidden", ""); //loader
             
@@ -195,6 +196,7 @@ async function verifyPass(MACH,MADT) {
                 headers: {
                     "Content-Type": "application/json",
                     "auth-token": getCode1(),
+                    "role": "DT"
                 },
             })
                 .then(response => {
@@ -309,7 +311,8 @@ async function viewPass(MACH,MADT, text_connect){
                                     headers: {
                                         "Content-Type": "application/json",
                                         "auth-token": getCode1(),
-                                        "key": text_connect
+                                        "key": text_connect,
+                                        "role": "DT"
                                     },
                                 }).then((response) => {
                                     authenticatePrivateAPIChecking(response);

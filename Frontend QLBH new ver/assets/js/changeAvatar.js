@@ -1,4 +1,4 @@
-function changeAvatar(dataUpdate, link, reloadAvatar) {
+function changeAvatar(dataUpdate, link, reloadAvatar, role) {
     let cloudName = "dayrqfwxo"
     let uploadPreset = "lmcv3avs"
     //config cloud connection
@@ -17,6 +17,7 @@ function changeAvatar(dataUpdate, link, reloadAvatar) {
                 headers: {
                     "Content-Type": "application/json",
                     "auth-token": getCode1(),
+                    "role": role,
                 }
             }).then((respone) => {
                 authenticatePrivateAPIChecking(respone)

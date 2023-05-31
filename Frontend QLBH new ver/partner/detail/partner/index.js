@@ -87,6 +87,7 @@ async function changePassword() {
                     headers: {
                         "Content-Type": "application/json",
                         "auth-token": getCode1(),
+                        "role": "DT",
                     },
                 })
                     .then(response => {
@@ -138,6 +139,7 @@ async function updateData(dataRep) {
         headers: {
             "Content-Type": "application/json",
             "auth-token": getCode1(),
+            "role": "DT",
         },
     }).then((response) => {
         authenticatePrivateAPIChecking(response)
@@ -290,7 +292,7 @@ async function form_Display() {
             "madt": MADT,
         }
         
-        css_Avatar(changeAvatar(dataUpdate, url_ChangeAvatar, true));
+        css_Avatar(changeAvatar(dataUpdate, url_ChangeAvatar, true, "DT"));
     });
 }
 
@@ -319,6 +321,7 @@ async function verifyEmail(email) {
                 headers: {
                     "Content-Type": "application/json",
                     "auth-token": getCode1(),
+                    "role": "DT",   
                 },
             })
             .then((response) => {
@@ -374,6 +377,7 @@ async function changeEmail() {
                 headers: {
                     "Content-Type": "application/json",
                     "auth-token": getCode1(),
+                    "role": "DT",
                 },
             })
                 .then(response => {

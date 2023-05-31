@@ -18,6 +18,7 @@ async function FetchData(dataRep){
         headers: {
             "Content-Type": "application/json",
             "auth-token" : getCode1(),
+            "role" : "DT",
         },
     }).then((response) => {
         authenticatePrivateAPIChecking(response)

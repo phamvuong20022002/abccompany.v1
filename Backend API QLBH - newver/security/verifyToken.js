@@ -1,37 +1,17 @@
 const jwt = require('jsonwebtoken');
 const config = require('../config');
 
-function partner(req, res, next){
+function tokenLogin(req, res, next){
     const token = req.header('auth-token');
+    const role = req.header('role');
     if(!token) {
         return res.status(401).send('Access Denied');
     }
     try {
         let verified = jwt.verify(token, config.privateToken);
-        if(verified.username === req.params.id || verified.username === req.body.madt){
-            next();
-        }else{
-            throw res.status(400).send('Can not authenticate');
-        }
-        
-    } catch (error) {
-        res.status(400).send('Invalid token');
-    }
-}
-
-function accountEmail(req, res, next){
-    const token = req.header('auth-token');
-    if(!token) {
-        return res.status(401).send('Access Denied');
-    }
-    try {
-        let role = req.body.role
-        let verifyCode = null
-        if(role === null ){
-            throw res.status(400).send('Can not authenticate');
-        }
+        let verifyCode = null;
         if(role === "DT"){
-            verifyCode = req.body.madt
+            verifyCode = req.body.madt 
         }
         else if(role === "NV"){
             verifyCode = req.body.manv
@@ -42,8 +22,14 @@ function accountEmail(req, res, next){
         else if(role === "TX"){
             verifyCode = req.body.matx
         }
-        let verified = jwt.verify(token, config.privateToken);
-        if(verified.username === verifyCode){
+        else if(role === "CH"){
+            verifyCode = req.body.mach
+        }
+        else {
+            verifyCode = null
+        }
+        if(verified.username === req.params.id 
+            || verified.username === verifyCode){
             next();
         }else{
             throw res.status(400).send('Can not authenticate');
@@ -53,6 +39,7 @@ function accountEmail(req, res, next){
         res.status(400).send('Invalid token');
     }
 }
+
 module.exports = {
-    partner, accountEmail
+    tokenLogin
 }

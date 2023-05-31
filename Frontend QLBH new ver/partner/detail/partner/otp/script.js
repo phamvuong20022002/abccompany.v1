@@ -83,6 +83,7 @@ async function resendOTP(){
         headers: {
             "Content-Type": "application/json",
             "auth-token": getCode1(),
+            "role": "DT",
         },
     }).then((response) => {
         authenticatePrivateAPIChecking(response)
@@ -153,7 +154,6 @@ if (text_connect !== undefined && text_connect !== null && checkAuthentication()
         }else {
             let dataReq = {
                 "type": "EMAIL",
-                "role": "DT",
                 "madt": localStorage.getItem("ACCCODE"),
                 "email" : localStorage.getItem("EMAIL_VERIFY"),
                 "otpcode": otp
@@ -166,6 +166,7 @@ if (text_connect !== undefined && text_connect !== null && checkAuthentication()
                 headers: {
                     "Content-Type": "application/json",
                     "auth-token": getCode1(),
+                    "role": "DT",
                 }
             }).then((response)=>{
                 authenticatePrivateAPIChecking(response)

@@ -51,7 +51,7 @@ const verifyOTPEmail = async(data) => {
                         .query(sqlQueries.checkOTPEmail);
         return result.recordset;
     } catch (error) {
-        
+        res.status(400).send(error.message);
     }
 }
 module.exports = {
