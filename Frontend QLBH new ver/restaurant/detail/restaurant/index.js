@@ -1,10 +1,11 @@
 // -----data input ------
-const oneRestaurant = localStorage.getItem("oneRestaurant");
+let oneRestaurant = null;
 const type_detail = localStorage.getItem("type_detail");
 // localStorage.removeItem("oneStaffCode");
 const BASE_URL = readTextFile("../../../../assets/data_local.txt")
-let url_Display = BASE_URL + "/partner/detailrestaurant/" + oneRestaurant
+let url_Display = BASE_URL + "/partner/detailrestaurant/"
 let url_Update = BASE_URL + "/restaurant/updaterestaurant"
+let url_ChangeAvatar = BASE_URL + "/partner/changeavatar/res"
 let update_button_status = "off"
 update_button_status = localStorage.getItem("update_button_status")
 // -----data input ------
@@ -108,45 +109,77 @@ function submit_button(){
     })
 }
 
-async function form_Display(){
+async function form_Display() {
     // console.log(update_button_status, type_detailStaff)
     // display alert
-    if((update_button_status === "on") && (type_detail === "VIEW")){ 
+    if ((update_button_status === "on") && (type_detail === "VIEW")) {
         localStorage.setItem("update_button_status", "off")
         const div = document.getElementById("alert-no-display")
         div.style = "display: block"
         div.innerHTML = "Bạn Đang Ở Chế Độ VIEW. Không Được Chỉnh Sửa Thông Tin Của Tài Khoản Khác!"
     }
 
-    if(update_button_status === "on" && type_detail !== "VIEW") {
+    if (update_button_status === "on" && type_detail !== "VIEW") {
         const display_div = document.getElementById("no-display")
         display_div.style = "display: inline"
     }
 
     //get data from database
-    const response = await fetch(url_Display)
-    const data = await response.json()
+    await fetch(url_Display + oneRestaurant).then((response) => {
+        return response.json();
+    }).then((data) => {
 
-    //display
-    let input = document.getElementsByTagName("input")
-    const keys = Object.keys(data[0])
-    for(let i = input.length - 1; i > 0; i--){
-        if(i === 1 || i === 2 || i === 3 || i === 4 || i === 5 || i === 8 || i === 10){
-            input[i] = input[i].setAttribute("readonly", "")
+        //display
+        let input = document.getElementsByTagName("input")
+        const keys = Object.keys(data[0])
+        for (let i = input.length - 1; i > 0; i--) {
+            if (i === 1 || i === 2 || i === 3 || i === 4 || i === 5 || i === 8 || i === 10) {
+                input[i] = input[i].setAttribute("readonly", "")
+            }
+            input[i].setAttribute("value", data[0][keys[i - 1]])
+            if (i === input.length - 1) {
+                let textarea = document.getElementsByTagName("textarea")
+                textarea[0].value = data[0][keys[i]]
+            }
         }
-        input[i].setAttribute("value", data[0][keys[i - 1]])
-        if(i === input.length - 1){
-            let textarea = document.getElementsByTagName("textarea")
-            textarea[0].value = data[0][keys[i - 1]]
+        //avatar
+        let dataUpdate = {
+            "madt": data[0].MASOTHUE,
+            "mach": data[0].MACUAHANG,
         }
-    }
-    //
+        document.getElementById("photo").setAttribute("src",data[0].AVATAR)
+        css_Avatar(changeAvatar(dataUpdate, url_ChangeAvatar, true, "CH"));
+    })
+}
+
+// css for avatar
+function css_Avatar(myWidget){
+    // show update icon on avatar
+    let avatar = document.querySelector(".avatar")
+    //if hover on avatar
+    avatar.addEventListener("mouseenter", function (e) {
+        document.getElementById("uploadBnt").removeAttribute("hidden")
+    })
+    //if hover out avatar
+    avatar.addEventListener("mouseleave", function (e) {
+        document.getElementById("uploadBnt").setAttribute("hidden", "")
+    })
+    //if click on change icon
+    document.querySelector("#uploadBnt").addEventListener(
+        "click",
+        function () {
+            myWidget.open();
+        },
+        false
+    );
 }
 // ----------------MAIN ----------------
-if(oneRestaurant === null){
-    location.href = '../../../page-login.html'
+if(checkAuthentication()){
+    oneRestaurant = localStorage.getItem("ACCCODE");// MACH
+    document.getElementsByClassName("user-avatar rounded-circle")[0].setAttribute("src",localStorage.getItem("AVATAR"))
+    form_Display()
 }
 else{
-    form_Display()
+    location.href = '../../../page-login.html'
 }
 

@@ -1,0 +1,122 @@
+.avatar{
+    height: 200px;
+    width: 200px;
+    transform: translate(-50,-50%);
+    border: 5px solid gray;
+    position: relative;
+    left: 40%;
+    overflow: hidden;
+    border-radius: 50%;
+}
+#photo{
+    height: 100%;
+    width: 100%;
+}
+#file{
+    display: none;
+}
+#uploadBnt{
+    height:120%;
+    width: 100%;
+    position: absolute;
+    /* top:10%; */
+    left: 50%;
+    transform: translateX(-50%);
+    text-align: center;
+    color: rgb(255, 255, 255);
+    background-color: rgba(0, 0, 0, 0.7);
+    line-height: 30px;
+    font-family: sans-serif;
+    font-size: 15px;
+    -moz-animation: fadein 0.5s; /* Firefox */
+    -webkit-animation: fadein 0.5s; /* Safari and Chrome */
+    -o-animation: fadein 0.5s; /* Opera */
+    cursor: pointer;
+}
+#uploadBnt i{
+    position: relative;
+    top: 30%;
+    font-size: 50px;
+}
+@keyframes fadein {
+    from {
+        opacity:0;
+    }
+    to {
+        opacity:1;
+    }
+}
+@-moz-keyframes fadein { /* Firefox */
+    from {
+        opacity:0;
+    }
+    to {
+        opacity:1;
+    }
+}
+@-webkit-keyframes fadein { /* Safari and Chrome */
+    from {
+        opacity:0;
+    }
+    to {
+        opacity:1;
+    }
+}
+@-o-keyframes fadein { /* Opera */
+    from {
+        opacity:0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+/* Fade Out */
+@keyframes fadeOut { /* Opera */
+    0% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 0;
+    }
+}
+
+@-webkit-keyframes fadeOut { /* Safari and Chrome */
+    0% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 0;
+    }
+}
+
+@-moz-keyframes fadeOut { /* Firefox */
+    0% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 0;
+    }
+}
+
+@-o-keyframes fadeOut {
+    0% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 0;
+    }
+}
+
+@-ms-keyframes fadeOut {
+    0% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 0;
+    }
+}

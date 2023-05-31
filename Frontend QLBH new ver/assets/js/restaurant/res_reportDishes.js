@@ -1,5 +1,5 @@
 // -----data input ------
-const MACH = localStorage.getItem("ACCCODE");
+let MACH = null;
 let BASE_URL = readTextFile("../../../../assets/data_local.txt")
 let url_Display = BASE_URL + "/restaurant/reportdishes"
 let url_Parent_Chart = BASE_URL + "/restaurant/statictisGeneralDish"
@@ -66,14 +66,16 @@ async function statisticsButton(type){
     }
     const spinner = document.getElementById("spinner"); //loader
     spinner.removeAttribute('hidden'); //loader
-    console.log(dataReq)
     await fetch(url_Display, {
         method: "POST",
         body: JSON.stringify(dataReq),
         headers: {
             "Content-Type": "application/json",
+            "auth-token":getCode1(),
+            "role": "CH",
         },
     }).then((response) =>{
+        authenticatePrivateAPIChecking(response)
         return response.json()
     }).then((data) =>{
         DisplayTable(data)
@@ -266,8 +268,11 @@ async function getDataInitLinesChart(url_Parent_Chart){
         body: JSON.stringify(JSON.parse(localStorage.getItem('dataSearch'))),
         headers: {
             "Content-Type": "application/json",
+            "auth-token":getCode1(),
+            "role": "CH",
         },
     }).then((response) =>{
+        authenticatePrivateAPIChecking(response)
         return response.json()
     }).then((data) =>{
         
@@ -325,7 +330,6 @@ async function getDataInitLinesChart(url_Parent_Chart){
                 b = b.toString().split('/');
                 return a[1] - b[1] || a[0] - b[0];
             });
-            console.log(X_axisLineChart)
             for(let i = 0; i < objLineChart.length; i++){
                 // color of one line 
                 let color = getRgba(i).value
@@ -395,7 +399,6 @@ async function getDataInitLinesChart(url_Parent_Chart){
             defaultFontFamily: 'Montserrat',
             datasets: datasetLineChart
         }
-        console.log(dataInit)
         linesChartInit(dataInit, labelString_x, labelString_y)
         spinner.setAttribute('hidden', ''); //loader
     })
@@ -461,15 +464,13 @@ function linesChartInit(dataInit, labelString_x, labelString_y) {
     } );
 }
 // --------------MAIN----------------
-window.setInterval(function(){
-    if(checklogin(MACH) === false){
-        location.href = '../page-login.html'
-    } 
-}, 1000);
-if(MACH === null){
-    location.href = '../page-login.html'
-}else
-{   
+if(checkAuthentication()){
+    MACH = localStorage.getItem("ACCCODE") // MACH
+    document.getElementsByClassName("user-avatar rounded-circle")[0].setAttribute("src",localStorage.getItem("AVATAR"))
     statisticsButton('ALL')
 }
+else {
+    location.href = '../page-login.html'
+}
+
 

@@ -1,7 +1,7 @@
 // ------------Data input-------
-const MACH = localStorage.getItem("ACCCODE") // MACH
+let MACH = null;
 let BASE_URL = readTextFile("../../../assets/data_local.txt")
-let url_display = BASE_URL + "/restaurant/getmenu/" + MACH
+let url_display = BASE_URL + "/restaurant/getmenu/"
 
 // animation
 function animateCounter(obj, initVal, lastVal, duration) {
@@ -179,8 +179,13 @@ function Display_Widgets(data) {
 }
 // get data
 async function Display_(){
-    await fetch(url_display)
+    await fetch(url_display + MACH,{
+        headers:{
+            "auth-token": getCode1(),
+        }
+    })
     .then((response) => {
+        authenticatePrivateAPIChecking(response)
         return response.json()
     }).then((data) => {
         // console.log(data);
@@ -192,14 +197,11 @@ async function Display_(){
 }
 
 // ---------- MAIN ------------
-window.setInterval(function(){
-    if(checklogin(MACH) === false){
-        location.href = '../page-login.html'
-    } 
-}, 1000);
-if (MACH === null) {
-    location.href = '../page-login.html'
+if(checkAuthentication()){
+    MACH = localStorage.getItem("ACCCODE") // MACH
+    document.getElementsByClassName("user-avatar rounded-circle")[0].setAttribute("src",localStorage.getItem("AVATAR"))
+    Display_();
 }
 else {
-    Display_()
+    location.href = '../page-login.html'
 }

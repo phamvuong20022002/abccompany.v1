@@ -1,5 +1,5 @@
 // -----data input ------
-const MACH = localStorage.getItem("ACCCODE");
+let MACH = null
 let BASE_URL = readTextFile("../../../../assets/data_local.txt")
 let url_Display = BASE_URL + "/restaurant/managebills"
 let dataTable 
@@ -58,8 +58,11 @@ async function statisticsButton(type){
         body: JSON.stringify(dataReq),
         headers: {
             "Content-Type": "application/json",
+            "auth-token": getCode1(),
+            "role": "CH"
         },
     }).then((response) =>{
+        authenticatePrivateAPIChecking(response)
         return response.json()
     }).then((data) =>{
         dataTable = data;
@@ -171,15 +174,16 @@ function DisplayTable(dataInit){
                 title: 'Mã Đơn',
                 align: 'left',
                 valign: 'bottom',
-                sortable: true,
-                width: '30%'
+                sortable: false,
+                width: '30%', 
+                className: 'MADH', 
             },
             {
                 field: 'SLMON',
                 title: 'SL Món',
                 align: 'center',
                 valign: 'bottom',
-                sortable: true,
+                sortable: false,
                 width: '30%'
             },
             {
@@ -195,7 +199,7 @@ function DisplayTable(dataInit){
                 title: 'Liên Hệ',
                 align: 'left',
                 valign: 'bottom',
-                sortable: true,
+                sortable: false,
                 width: '30%'
             },
             {
@@ -203,7 +207,7 @@ function DisplayTable(dataInit){
                 title: 'Địa Chỉ',
                 align: 'left',
                 valign: 'bottom',
-                sortable: true,
+                sortable: false,
                 width: '30%'
             },
             {
@@ -211,7 +215,7 @@ function DisplayTable(dataInit){
                 title: 'Đơn Giá',
                 align: 'left',
                 valign: 'bottom',
-                sortable: true,
+                sortable: false,
                 width: '30%'
             },
             {
@@ -219,23 +223,33 @@ function DisplayTable(dataInit){
                 title: 'Tình Trạng',
                 align: 'left',
                 valign: 'bottom',
-                sortable: true,
+                sortable: false,
                 width: '30%'
             }
         ]
     });
+    $(document).ready(function() {
+        $('.table tr').css("cursor", "pointer");
+        $('.table tr td:first-child').addClass('MACH');
+    });
+}
+function detailBill(){
+    document.getElementById('mytable').addEventListener("click", (e) => {
+        let MADH = e.target.closest("tr").getElementsByClassName("MACH")[0].innerText
+        localStorage.setItem('oneBillCode',MADH)
+        window.open("./detail/bill") 
+    })
+}
+// --------------MAIN----------------
+if(checkAuthentication()){
+    MACH = localStorage.getItem("ACCCODE") // MACH
+    document.getElementsByClassName("user-avatar rounded-circle")[0].setAttribute("src",localStorage.getItem("AVATAR"))
+    statisticsButton('ALL')
+    detailBill()
+}
+else
+{   
+    location.href = '../page-login.html'
 }
 
-// --------------MAIN----------------
-window.setInterval(function(){
-    if(checklogin(MACH) === false){
-        location.href = '../page-login.html'
-    } 
-}, 1000);
-if(MACH === null){
-    location.href = '../page-login.html'
-}else
-{   
-    statisticsButton('ALL')
-}
 

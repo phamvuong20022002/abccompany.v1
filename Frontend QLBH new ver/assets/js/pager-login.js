@@ -18,11 +18,15 @@ function Routes(ID, code1, code2){
     if(ID.substring(0,2) === "NV"){
         // console.log("Nhân Viên")
         localStorage.setItem("ACCCODE",ID)
+        localStorage.setItem("code-1",code1)
+        localStorage.setItem("code-2",code2)
         location.href = "/staff/"
     }
     else if(ID.substring(0,2) === "TX"){
         // console.log("Tài Xế")
         localStorage.setItem("ACCCODE",ID)
+        localStorage.setItem("code-1",code1)
+        localStorage.setItem("code-2",code2)
         location.href = "/driver/"
     }
     else if(ID.substring(0,3) === "TAX"){
@@ -35,6 +39,8 @@ function Routes(ID, code1, code2){
     else if(ID.substring(0,2) === "CH"){
         // console.log("Cửa Hàng")
         localStorage.setItem("ACCCODE",ID)
+        localStorage.setItem("code-1",code1)
+        localStorage.setItem("code-2",code2)
         location.href = "/restaurant/"
     }
     else {

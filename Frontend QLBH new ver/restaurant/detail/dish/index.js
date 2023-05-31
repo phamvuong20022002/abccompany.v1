@@ -1,6 +1,6 @@
 // -----data input ------
-const MACH = localStorage.getItem('ACCCODE');
-const oneDish = localStorage.getItem("oneDish");
+let MACH = null;
+let oneDish = null;
 const type_detail = localStorage.getItem("type_detail");
 // localStorage.removeItem("oneStaffCode");
 let BASE_URL = readTextFile("../../../../assets/data_local.txt")
@@ -38,13 +38,17 @@ function submit_button() {
                 body: JSON.stringify(dataReq),
                 headers: {
                     "Content-Type": "application/json",
+                    "auth-token": getCode1(),
+                    "role": "CH",
                 },
             }).then(response => {
-                    if (!response.ok) {
-                        throw new Error(response.statusText)
-                    }
-                    return response.json()
-                })
+                authenticatePrivateAPIChecking(response)
+
+                if (!response.ok) {
+                    throw new Error(response.statusText)
+                }
+                return response.json()
+            })
                 .catch(error => {
                     Swal.showValidationMessage(
                         `Request failed: ${error}`
@@ -53,7 +57,7 @@ function submit_button() {
         },
         allowOutsideClick: () => !Swal.isLoading()
     }).then((result) => {
-        if(result.dismiss !== 'cancel' && result.dismiss !== 'backdrop'){
+        if (result.dismiss !== 'cancel' && result.dismiss !== 'backdrop') {
             // console.log(result.value)
             const keys = Object.keys(result.value[0])
             if (keys[0] === "ERROR") {
@@ -62,7 +66,8 @@ function submit_button() {
                     title: "Cập Nhật Không Thành Công!",
                     text: result.value[0][keys[0]],
                     icon: "error",
-                    button: "Click me!"
+                    button: "Click me!",
+                    footer: '<a href="">Tìm hiểu về lỗi này?</a>'
                 }).then(function () {
                     location.reload();
                 }
@@ -80,7 +85,7 @@ function submit_button() {
                 }
                 );
             }
-            }
+        }
     })
 }
 
@@ -100,19 +105,11 @@ async function form_Display() {
     }
 
     //get data from database
-    let dataReq = {
-        "mach": MACH,
-        "tenmon": oneDish
-    }
-    fetch(url_Display, {
-        method: "POST",
-        body: JSON.stringify(dataReq),
-        headers: {
-            "Content-Type": "application/json",
-        },
-    }).then(response => {
+    await fetch(url_Display + "id=" + MACH + "&tenmon=" + oneDish)
+    .then(response => {
+        authenticatePrivateAPIChecking(response)
         return response.json()
-    }).then((data) =>{
+    }).then((data) => {
         //display
         let input = document.getElementsByTagName("input")
         const keys = Object.keys(data[0])
@@ -123,16 +120,12 @@ async function form_Display() {
     })
 }
 // ----------------MAIN ----------------
-window.setInterval(function(){
-    if(checklogin(MACH) === false){
-        location.href = '../../../page-login.html'
-    } 
-}, 1000);
-if (MACH.substring(0,2) !== 'CH' || oneDish === null) {
-    location.href = '../page-login.html'
-}
-
-else {
+if (checkAuthentication()) {
+    MACH = localStorage.getItem("ACCCODE") // MACH
+    oneDish = localStorage.getItem("oneDish") // Ten Mon
+    document.getElementsByClassName("user-avatar rounded-circle")[0].setAttribute("src",localStorage.getItem("AVATAR"))
     form_Display()
 }
-
+else {
+    location.href = '../page-login.html'
+}

@@ -17,7 +17,7 @@
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/normalize.css@8.0.0/normalize.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/css/bootstrap.min.css">
-    
+
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/lykmapipo/themify-icons@0.1.2/css/themify-icons.css">
     <link rel="stylesheet"
@@ -42,53 +42,55 @@
         <nav class="navbar navbar-expand-sm navbar-default">
             <div id="main-menu" class="main-menu collapse navbar-collapse">
                 <ul class="nav navbar-nav">
-                    <li>
+                    <li class="active">
                         <a href="index.html"><i class="menu-icon fa fa-laptop"></i>Trang Chủ </a>
                     </li>
                     <li class="menu-title">Mục Quản Lý</li><!-- /.menu-title -->
-                    <li >
+                    <li>
                         <a href="./res_manageBills.html"> <i class="menu-icon fa fa-cogs"></i>Đơn Hàng</a>
                     </li>
-                    <li >
+                    <li>
                         <a href="./res_manageDishes.html"> <i class="menu-icon fa fa-table"></i>Menu</a>
                     </li>
                     <li class="menu-item-has-children dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
                             aria-expanded="false"> <i class="menu-icon fa fa-th"></i>Khách Hàng</a>
                         <ul class="sub-menu children dropdown-menu">
-                            <li><i class="menu-icon fa fa-th"></i><a href="forms-basic.html">Danh sách khách hàng</a>
+                            <li><i class="menu-icon fa fa-th"></i><a href="res_customer.html">Dữ Liệu Khách hàng</a>
                             </li>
-                            <li><i class="menu-icon fa fa-th"></i><a href="forms-advanced.html">Phiếu giảm giá</a></li>
-                            <li><i class="menu-icon fa fa-th"></i><a href="forms-advanced.html">Feedbacks</a></li>
-                            <li><i class="menu-icon fa fa-th"></i><a href="forms-advanced.html">Tạo chiến dịch
+                            <li><i class="menu-icon fa fa-th"></i><a href="res_coupon_voucher.html">Phiếu giảm giá</a>
+                            </li>
+                            <li><i class="menu-icon fa fa-th"></i><a href="res_customer_feedbacks.html">Feedbacks</a>
+                            </li>
+                            <li><i class="menu-icon fa fa-th"></i><a href="res_marketing.html">Tạo chiến dịch
                                     Marketing</a></li>
                         </ul>
                     </li>
 
                     <li class="menu-title">Thống Kê Số Liệu</li><!-- /.menu-title -->
 
-                    <li class="menu-item-has-children dropdown active" >
+                    <li class="menu-item-has-children dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
                             aria-expanded="false"> <i class="menu-icon fa fa-tasks"></i>Món ăn</a>
                         <ul class="sub-menu children dropdown-menu">
-                            <li><i class="menu-icon fa fa-fort-awesome"></i><a href="font-fontawesome.html">Tạo báo
-                                    cáo</a></li>
+                            <li><i class="menu-icon fa fa-fort-awesome"></i><a href="res_reportDishes.html">Dữ liệu
+                                    thống kê</a></li>
                         </ul>
                     </li>
                     <li class="menu-item-has-children dropdown">
                         <a href="widgets.html" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
                             aria-expanded="false"> <i class="menu-icon ti-email"></i>Đơn Hàng </a>
                         <ul class="sub-menu children dropdown-menu">
-                            <li><i class="menu-icon fa fa-fort-awesome"></i><a href="font-fontawesome.html">Tạo báo
-                                    cáo</a></li>
+                            <li><i class="menu-icon fa fa-fort-awesome"></i><a href="res_reportBills.html">Dữ liệu thống
+                                    kê</a></li>
                         </ul>
                     </li>
                     <li class="menu-item-has-children dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
                             aria-expanded="false"> <i class="menu-icon fa fa-bar-chart"></i>Dữ liệu doanh thu</a>
                         <ul class="sub-menu children dropdown-menu">
-                            <li><i class="menu-icon fa fa-line-chart"></i><a href="charts-chartjs.html">Tạo báo cáo</a>
-                            </li>
+                            <li><i class="menu-icon fa fa-line-chart"></i><a href="res_reportRevenue.html">Thống kê báo
+                                    cáo doanh thu</a></li>
                         </ul>
                     </li>
                 </ul>
@@ -193,11 +195,11 @@
                     <div class="user-area dropdown float-right">
                         <a href="#" class="dropdown-toggle active" data-toggle="dropdown" aria-haspopup="true"
                             aria-expanded="false">
-                            <img class="user-avatar rounded-circle" src="../images/admin.jpg" alt="User Avatar">
+                            <img class="user-avatar rounded-circle" src="" alt="V" style="width: 45px; height: 45px;">
                         </a>
 
                         <div class="user-menu dropdown-menu">
-                            <a class="nav-link" href="#" onclick="myProfile()"><i class="fa fa-user"></i>My Profile</a>
+                            <a class="nav-link" href="./detail/restaurant/"><i class="fa fa-user"></i>My Profile</a>
 
                             <a class="nav-link" href="#"><i class="fa fa-info"></i>Notifications <span
                                     class="count">13</span></a>
@@ -241,7 +243,7 @@
                 </div>
             </div>
         </div>
-        
+
         <!-- content -->
         <div class="content">
             <div class="animated fadeIn">
@@ -385,10 +387,10 @@
                     <div class="col-md-12">
                         <div class="card">
                             <div class="card-header">
-                                <strong class="card-title h5" id = "table-title">Danh Sách Món Ăn </strong> <br />
+                                <strong class="card-title h5" id="table-title">Danh Sách Món Ăn </strong> <br />
                                 <br>
-                                <button type="button" class="btn btn-outline-secondary btn-sm status" id = "btn-status-all"
-                                    onclick="drawChart()" style="position: relative; float: right;">
+                                <button type="button" class="btn btn-outline-secondary btn-sm status"
+                                    id="btn-status-all" onclick="drawChart()" style="position: relative; float: right;">
                                     <i class="fa fa-square"></i>&nbsp;
                                     Xem Thống Kê Bằng Biểu Đồ
                                 </button>
@@ -398,7 +400,7 @@
                                 <table class="table table-striped table-bordered" id="mytable">
                                     <!-- content -->
                                 </table>
-                                
+
                             </div>
                             <div class="card-body lines-chart" style="display: none;">
                                 <!-- <h4 class="mb-3">Biểu Đồ 1 </h4> -->
@@ -415,23 +417,31 @@
                                 <!-- /loader -->
                                 <div>Chi Tiết Thống Kê</div>
                                 <div class="input-group">
-                                    <input type="email" id="input2-group3" name="input2-group3" placeholder="Email" class="form-control">
+                                    <input type="email" id="input2-group3" name="input2-group3" placeholder="Email"
+                                        class="form-control">
                                     <div class="input-group-btn">
                                         <div class="btn-group">
-                                            <button type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="dropdown-toggle btn btn-primary">Dropdown</button>
+                                            <button type="button" data-toggle="dropdown" aria-haspopup="true"
+                                                aria-expanded="false"
+                                                class="dropdown-toggle btn btn-primary">Dropdown</button>
                                             <div tabindex="-1" aria-hidden="true" role="menu" class="dropdown-menu">
-                                                <button type="button" tabindex="0" class="dropdown-item">Action</button><button type="button" tabindex="0" class="dropdown-item">Another Action</button><button type="button" tabindex="0" class="dropdown-item">Something else here</button>
+                                                <button type="button" tabindex="0"
+                                                    class="dropdown-item">Action</button><button type="button"
+                                                    tabindex="0" class="dropdown-item">Another Action</button><button
+                                                    type="button" tabindex="0" class="dropdown-item">Something else
+                                                    here</button>
                                                 <div tabindex="-1" class="dropdown-divider"></div>
-                                                <button type="button" tabindex="0" class="dropdown-item">Separated link</button>
+                                                <button type="button" tabindex="0" class="dropdown-item">Separated
+                                                    link</button>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        
+
                     </div>
-                <!-- ./Table -->
+                    <!-- ./Table -->
                 </div>
             </div><!-- .animated -->
         </div><!-- .content -->
@@ -469,9 +479,11 @@
     <!-- Script for table -->
     <script src="https://cdn.jsdelivr.net/npm/tableexport.jquery.plugin@1.10.21/tableExport.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/tableexport.jquery.plugin@1.10.21/libs/jsPDF/jspdf.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/tableexport.jquery.plugin@1.10.21/libs/jsPDF-AutoTable/jspdf.plugin.autotable.js"></script>
+    <script
+        src="https://cdn.jsdelivr.net/npm/tableexport.jquery.plugin@1.10.21/libs/jsPDF-AutoTable/jspdf.plugin.autotable.js"></script>
     <script src="https://unpkg.com/bootstrap-table@1.21.1/dist/bootstrap-table.min.js"></script>
-    <script src="https://unpkg.com/bootstrap-table@1.21.0/dist/extensions/export/bootstrap-table-export.min.js"></script>
+    <script
+        src="https://unpkg.com/bootstrap-table@1.21.0/dist/extensions/export/bootstrap-table-export.min.js"></script>
 
     <!-- Chart -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js@2.7.3/dist/Chart.bundle.min.js"></script>
@@ -480,7 +492,7 @@
     <script type="text/javascript" src="../assets/js/readLocalFile.js"></script>
     <script type="text/javascript" src="../assets/js/checklogin.js"></script>
     <script src="../assets/js/restaurant/res_reportDishes.js"></script>
-    
+
 
 </body>
 

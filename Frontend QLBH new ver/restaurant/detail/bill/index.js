@@ -1,9 +1,10 @@
 // -----data input ------
-const MACH = localStorage.getItem('ACCCODE');
-const oneBillCode = localStorage.getItem("oneBillCode");
+let MACH = null;
+let oneBillCode = null;
+
 let BASE_URL = readTextFile("../../../../assets/data_local.txt")
-let url_Display_Dishes = BASE_URL + "/restaurant/detailbill/" + oneBillCode
-let url_Get_Order_Items = BASE_URL + "/restaurant/getorderitems/" + oneBillCode
+let url_Display_Bill = BASE_URL + "/restaurant/detailbill/"
+let url_Get_Order_Items = BASE_URL + "/restaurant/getorderitems/"
 //My profile
 function myProfile(){
     localStorage.setItem("oneRestaurant",localStorage.getItem("ACCCODE"))
@@ -35,7 +36,12 @@ function printElement(elem) {
 }
 //display bill info
 async function displayBillInfo(){
-    await fetch(url_Display_Dishes).then((response) => {
+    await fetch(url_Display_Bill +"id="+ MACH + "&madh=" + oneBillCode,{
+        headers:{
+            "auth-token": getCode1(),
+        }
+    }).then((response) => {
+        authenticatePrivateAPIChecking(response)
         return response.json();
     }).then((data) => {
         //customer name
@@ -61,7 +67,12 @@ async function displayBillInfo(){
 }
 //display ordered items
 async function displayOrderedItems(){
-    await fetch(url_Get_Order_Items).then((response) => {
+    await fetch(url_Get_Order_Items + "id="+ MACH + "&madh=" + oneBillCode,{
+        headers:{
+            "auth-token": getCode1(),
+        }
+    }).then((response) => {
+        authenticatePrivateAPIChecking(response)
         return response.json()
     }).then((data) =>{
         let dishesContainer = document.getElementById('dishes-container')
@@ -123,16 +134,16 @@ async function displayOrderedItems(){
     })
 }
 // ----------------MAIN ----------------
-window.setInterval(function(){
-    if(checklogin(MACH) === false){
-        location.href = '../../../page-login.html'
-    } 
-}, 1000);
-if(MACH.substring(0,2) !== 'CH' || MACH === null){
-    location.href = '../../../page-login.html'
-}
-else{
+if(checkAuthentication()){
+    MACH = localStorage.getItem("ACCCODE") // MACH
+    oneBillCode = localStorage.getItem("oneBillCode"); //MADH
+    document.getElementsByClassName("user-avatar rounded-circle")[0].setAttribute("src",localStorage.getItem("AVATAR"))
     displayBillInfo()
     displayOrderedItems()
 }
+else
+{   
+    location.href = '../page-login.html'
+}
+
 

@@ -1,10 +1,10 @@
 // const { data } = require("@tensorflow/tfjs-node");
 
 // ------------Data input-------
-const MACH = localStorage.getItem("ACCCODE") // MADT
+let MACH = null
 let BASE_URL = readTextFile("../../../assets/data_local.txt")
-let url_displayWidgets = BASE_URL + "/restaurant/generalinfo/" + MACH
-let url_displayTable = BASE_URL + "/restaurant/getwaitingbill/" + MACH
+let url_displayWidgets = BASE_URL + "/restaurant/generalinfo/"
+let url_displayTable = BASE_URL + "/restaurant/getwaitingbill/"
 let url_updateBillStatus = BASE_URL + "/restaurant/updatebillstatus" 
 let dataWaitingBills = ((JSON.parse(localStorage.getItem('dataWaitingBillsLocal'))) === null ) ? [] : JSON.parse(localStorage.getItem('dataWaitingBillsLocal')); 
 let numOfBills
@@ -21,9 +21,26 @@ function myProfile(){
 async function DisplayWidget(){
     const spinner = document.getElementById("spinner"); //loader
     spinner.removeAttribute('hidden'); //loader
-    await fetch(url_displayWidgets).then((response) =>{
+    await fetch(url_displayWidgets + MACH, {
+        headers: {
+            'auth-token':getCode1(),
+        }
+    })
+    .then((response) =>{
+        authenticatePrivateAPIChecking(response)
         return response.json()
     }).then((result) =>{
+        console.log(result[0]);
+
+        //storage avatar to local 
+        let src_avatar = "https://www.kasandbox.org/programming-images/avatars/starky-seedling.png"
+        if(result[0].AVATAR !== null){
+            src_avatar = result[0].AVATAR
+        }
+        localStorage.setItem("AVATAR", src_avatar)
+        // set corner avatar
+        document.getElementsByClassName("user-avatar rounded-circle")[0].setAttribute("src",src_avatar)
+
         spinner.setAttribute('hidden', ''); //loader
         document.getElementById('widget-resCode').innerHTML = result[0].MACUAHANG
         document.getElementById('widget-time').innerHTML = result[0].GIOMOCUA + " - " +  result[0].GIODONGCUA
@@ -238,7 +255,13 @@ function getIDWhenChecked(numOfBills){
 async function DisplayTable() {
     const spinner = document.getElementById("spinner table"); //loader
     spinner.removeAttribute('hidden'); //loader
-    await fetch(url_displayTable).then((response) =>{
+    await fetch(url_displayTable + MACH,{
+        headers:{
+            'auth-token': getCode1(),
+        }
+    })
+    .then((response) =>{
+        authenticatePrivateAPIChecking(response)
         return response.json()
     }).then((listWaitingBills) =>{
         for (let countBill = 0; countBill < listWaitingBills.length; countBill++) {
@@ -607,8 +630,11 @@ async function updateBillStatus(madh,status){
         body: JSON.stringify(dataUpdate),
         headers: {
             "Content-Type": "application/json",
+            "auth-token": getCode1(),
+            "role": "CH"
         },
     }).then((response) =>{
+        authenticatePrivateAPIChecking(response)
         return response.json()
     }).then((result) =>{
         //return result
@@ -623,19 +649,14 @@ async function updateBillStatus(madh,status){
     })
 }
 // -----------------MAIN ----------------
-
-window.setInterval(function(){
-    if(checklogin(MACH) === false){
-        location.href = '../page-login.html'
-    } 
-}, 1000);
-
-if(MACH === null || MACH.substring(0,2) !== 'CH' ){
-    location.href = '../page-login.html'
-}else
-{   
+if(checkAuthentication()){
+    MACH = localStorage.getItem("ACCCODE") // MACH
     DisplayWidget()
     DisplayTable()
+}
+else
+{   
+    location.href = '../page-login.html'
 }
 
 

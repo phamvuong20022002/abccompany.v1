@@ -44,7 +44,7 @@ const res_updateRestaurant = async (req, res, next) => {
 
 const res_detailBill = async (req, res, next) => {
     try {
-        const billID = req.params.id;
+        const billID = req.params.madh;
         const info = await ResData.res_detailBill(billID);
         res.send(info);
     }catch (error) {
@@ -94,7 +94,10 @@ const res_updateDishStatus = async (req, res, next) => {
 
 const res_detaildish = async (req, res, next) => {
     try {
-        const data = req.body;
+        let data = {
+            "mach" : req.params.id,
+            "tenmon": req.params.tenmon,
+        }
         const dish = await ResData.res_detaildish(data);
         res.send(dish);
     } catch (error) {
