@@ -33,6 +33,7 @@ function printElement(elem) {
     $printSection.innerHTML = "";
     $printSection.appendChild(domClone);
     window.print();
+    $printSection.removeChild(domClone);
 }
 //display bill info
 async function displayBillInfo(){
@@ -62,6 +63,8 @@ async function displayBillInfo(){
         document.getElementById('total').innerHTML = (data[0].TONGGIA + data[0].PHIVANCHUYEN).toFixed(0).toString() + ' VNĐ'
         //bill status
         document.getElementById('bill-status').innerHTML = data[0].TINHTRANG
+        //barcode
+        JsBarcode("#barcode", data[0].MADH);
         
     })
 }

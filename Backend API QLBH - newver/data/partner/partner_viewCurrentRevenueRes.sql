@@ -1,0 +1,1 @@
+exec [dbo].[partner_viewCurrentRevenueRes] @madt, @mach

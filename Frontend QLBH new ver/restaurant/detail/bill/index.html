@@ -130,8 +130,7 @@
                         </a>
 
                         <div class="user-menu dropdown-menu">
-                            <a class="nav-link" href="../restaurant/" ><i
-                                    class="fa fa-user"></i>My Profile</a>
+                            <a class="nav-link" href="../restaurant/"><i class="fa fa-user"></i>My Profile</a>
 
                             <a class="nav-link" href="#"><i class="fa fa-bell-o"></i>Notifications <span
                                     class="count">13</span></a>
@@ -186,31 +185,30 @@
                                 Print
                             </button>
                             <h4 class="mt-2 mb-3">Thông Tin Đơn Hàng</h4>
-                            <h6 class="name" >Tên Khách Hàng: <span id = "customer-name">Khách hàng A</span></h6>
+                            <h6 class="name">Tên Khách Hàng: <span id="customer-name">Khách hàng A</span></h6>
                             <span class="fs-13 text-black-50"> Thông tin liên lạc (mail - sđt): </span>
-                            <span class="fs-13 text-black-50" id = "customer-contact"> kha@mail.com/091948908485</span>
+                            <span class="fs-13 text-black-50" id="customer-contact"> kha@mail.com/091948908485</span>
                             <hr>
                             <div class="d-flex flex-row justify-content-between align-items-center order-details">
-                                <div><span class="d-block fs-12" >Ngày đặt</span>
-                                    <span class="font-weight-bold" id = "ordered-date">12 March 2020</span>
-                                    </div>
+                                <div><span class="d-block fs-12">Ngày đặt</span>
+                                    <span class="font-weight-bold" id="ordered-date">12 March 2020</span>
+                                </div>
                                 <div>
-                                    <span class="d-block fs-12">Mã Đơn Hàng</span><span
-                                        class="font-weight-bold"  id = "bill-code">OD44434324</span>
+                                    <span class="d-block fs-12">Mã Đơn Hàng</span><span class="font-weight-bold"
+                                        id="bill-code">OD44434324</span>
                                 </div>
                                 <div>
                                     <span class="d-block fs-12">Phương Thức Thanh Toán</span>
-                                    <span
-                                        class="font-weight-bold">Credit card</span><img class="ml-1 mb-1"
+                                    <span class="font-weight-bold">Credit card</span><img class="ml-1 mb-1"
                                         src="../../../images/credit_logo.png" width="20">
-                                    </div>
+                                </div>
                                 <div>
                                     <span class="d-block fs-12">Địa Chỉ Giao Hàng</span>
-                                    <span class="font-weight-bold text-success" id = "bill-address">New Delhi</span>
+                                    <span class="font-weight-bold text-success" id="bill-address">New Delhi</span>
                                 </div>
                             </div>
                             <hr>
-                            <div id = "dishes-container">
+                            <div id="dishes-container">
                                 <!-- food 1 -->
                                 <!-- <div class="d-flex justify-content-between align-items-center product-details">
                                     <div class="d-flex flex-row product-name-image">
@@ -230,34 +228,37 @@
                                     </div>
                                 </div>
                                 <br> -->
-                                
+
                             </div>
-                            
+
 
                             <div class="mt-5 amount row">
-                                <div class="d-flex justify-content-center col-md-6"><img
-                                        src="../../../images/QRcode_logo.gif" width="250" height="100"></div>
+                                <div class="d-flex justify-content-center col-md-6">
+                                    <svg id="barcode"></svg>
+                                    <!-- <img src="../../../images/QRcode_logo.gif" width="250" height="100"> -->
+                                </div>
                                 <div class="col-md-6">
                                     <div class="billing">
                                         <div class="d-flex justify-content-between"><span>Tổng giá</span><span
-                                                class="font-weight-bold" id = "subtotal">120.000 <span>VNĐ</span> </span>
-                                                
-                                            </div>
+                                                class="font-weight-bold" id="subtotal">120.000 <span>VNĐ</span> </span>
+
+                                        </div>
                                         <div class="d-flex justify-content-between mt-2"><span>Phí ship</span><span
-                                                class="font-weight-bold" id = "shipping-fee">15 <span>VNĐ</span></span></div>
+                                                class="font-weight-bold" id="shipping-fee">15 <span>VNĐ</span></span>
+                                        </div>
                                         <div class="d-flex justify-content-between mt-2"><span>Thuế VAT </span><span
                                                 class="font-weight-bold">0 <span>VNĐ</span></span></div>
-                                        <div class="d-flex justify-content-between mt-2"><span
-                                                class="text-success">Giảm Giá</span><span
-                                                class="font-weight-bold text-success">0 <span>VNĐ</span></span></div>
+                                        <div class="d-flex justify-content-between mt-2"><span class="text-success">Giảm
+                                                Giá</span><span class="font-weight-bold text-success">0
+                                                <span>VNĐ</span></span></div>
                                         <hr>
                                         <div class="d-flex justify-content-between mt-1"><span
                                                 class="font-weight-bold">Tổng Cộng</span><span
-                                                class="font-weight-bold text-success" id = 'total'>$165</span></div>
+                                                class="font-weight-bold text-success" id='total'>$165</span></div>
                                     </div>
                                 </div>
                             </div><span class="d-block">Tình Trạng Đơn Hàng</span><span
-                                class="font-weight-bold text-success" id = 'bill-status'></span><span
+                                class="font-weight-bold text-success" id='bill-status'></span><span
                                 class="d-block mt-3 text-black-50 fs-15"></span>
                             <hr>
                             <div class="d-flex justify-content-between align-items-center footer">
@@ -300,10 +301,13 @@
     <script src="https://cdn.jsdelivr.net/npm/jquery-match-height@0.7.2/dist/jquery.matchHeight.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
 
-
     <script src="../../../assets/js/main.js"></script>
+
     <!-- <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script> -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9.3.4/dist/sweetalert2.all.min.js"></script>
+
+    <!-- Barcode -->
+    <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.5/dist/JsBarcode.all.min.js"></script>
 
     <!-- MAIN SCRIPT -->
     <script type="text/javascript" src="../../../assets/js/readLocalFile.js"></script>

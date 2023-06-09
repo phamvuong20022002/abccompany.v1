@@ -378,11 +378,25 @@ const partner_changeAvatarRes = async(data) => {
     }
 }
 
+const partner_viewCurrentRevenueRes = async(data) => {
+    try{
+        let pool = await sql.connect(config.sql);
+        const sqlQueries = await utils.loadSqlQueries('partner');
+        const list = await pool.request()
+                            .input('madt', sql.Char(15), data.madt)
+                            .input('mach', sql.Char(15), data.mach)
+                            .query(sqlQueries.partner_viewCurrentRevenueRes);
+        return list.recordset;
+    }catch (error) {
+        return error.message;
+    }
+}
+
 module.exports = {
     partner_generalInfo, partner_Statistical_Cus, partner_NumCus_Type, partner_Res_Revenue,
     partner_Statistical_Bills_Status, partner_manageDishes, partner_detailDish, partner_updateDish,
     partner_manageRestaurants, partner_getInfo, partner_updateInfo, partner_changePassword, partner_addDishes,
     partner_detailRestaurant, partner_updateRestaurant, partner_createRestaurant, partner_changePassRes, 
     partner_viewResPass, partner_getContract, partner_changeAvatar, verifypass, changeEmail_Phone,
-    partner_verifyEmail_Phone, partner_changeAvatarRes
+    partner_verifyEmail_Phone, partner_changeAvatarRes, partner_viewCurrentRevenueRes
 }

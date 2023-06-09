@@ -1,1 +1,0 @@
-EXEC [dbo].[listFoodForRestaurant] @masothue, @macuahang

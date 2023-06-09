@@ -31,6 +31,7 @@ router.post('/verifypass/update',verify.tokenLogin,PARTNERControll.verifypass); 
 router.post('/changeemail',verify.tokenLogin,ACCController.verifyOTPEmail,PARTNERControll.changeEmail_Phone);  // private + OTP
 router.post('/verify/email',verify.tokenLogin,ACCController.verifyOTPEmail,PARTNERControll.partner_verifyEmail_Phone);  // private + OTP
 router.put('/changeavatar/res',verify.tokenLogin,PARTNERControll.partner_changeAvatarRes);  // private
+router.get('/viewrevenueres/id=:id&mach=:mach',verify.tokenLogin,PARTNERControll.partner_viewCurrentRevenueRes);  // private
 module.exports = {
     routes: router
 }

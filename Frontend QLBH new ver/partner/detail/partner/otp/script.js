@@ -123,6 +123,7 @@ try {
     text_2 = text_connect.substring(0, text_connect.length - text_1.length)
     text_connect_check = getCode1().substring(text_2.length, text_2.length + 5)
 } catch (error) {
+    console.log(error.message)
     Swal.fire(
         'Không Thể Xác thực phiên truy cập!',
         'Phiên truy của bạn ở trang này đã hết hạn.',
@@ -156,10 +157,11 @@ if (text_connect !== undefined && text_connect !== null && checkAuthentication()
                 "type": "EMAIL",
                 "madt": localStorage.getItem("ACCCODE"),
                 "email" : localStorage.getItem("EMAIL_VERIFY"),
-                "otpcode": otp
+                "otpcode": otp,
             }
             const spinner = document.getElementById("spinner"); //loader
             spinner.removeAttribute('hidden'); //loader
+            console.log(localStorage.getItem("TYPE_VERIFY_PARTNER"));
             await fetch(getUrl(localStorage.getItem("TYPE_VERIFY_PARTNER")),{
                 method: "POST",
                 body: JSON.stringify(dataReq),

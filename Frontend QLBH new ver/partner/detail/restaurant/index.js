@@ -9,6 +9,7 @@ let url_ViewPass = BASE_URL + "/partner/viewrespass/"
 let url_ChangePass = BASE_URL + "/partner/updaterespass"
 let url_VerifyPass = BASE_URL + "/partner/verifypass/update"
 let url_ChangeAvatarRes = BASE_URL + "/partner/changeavatar/res"
+let url_LineChartRevenue = BASE_URL + "/partner/viewrevenueres/"
 let update_button_status = "off"
 update_button_status = localStorage.getItem("update_button_status")
 // -----data input ------
@@ -468,19 +469,19 @@ function Init_BarChart() {
         }
     });
 }
-function Init_LineChart() {
+function Init_LineChart(labelsInput, dataInput) {
     //Sales chart
     var ctx = document.getElementById("sales-chart");
     ctx.height = 150;
     var myChart = new Chart(ctx, {
         type: 'line',
         data: {
-            labels: ["2012", "2013", "2014", "2015", "2016", "2017", "2018"],
+            labels: labelsInput,
             type: 'line',
             defaultFontFamily: 'Montserrat',
             datasets: [{
                 label: "Doanh Thu",
-                data: [50, 50, 40, 80, 35, 99, 80],
+                data: dataInput,
                 backgroundColor: 'transparent',
                 borderColor: 'rgba(40,167,69,0.75)',
                 borderWidth: 3,
@@ -541,6 +542,23 @@ function Init_LineChart() {
         }
     });
 }
+async function CreateChart(type, url_getAPI, MADT, MACH){
+    await fetch(url_getAPI + "id=" + MADT + "&mach=" + MACH, {
+        headers: {
+            "auth-token": getCode1(),
+            "role": "DT"
+        }
+    }).then((response) =>{
+        authenticatePrivateAPIChecking(response)
+        return response.json()
+    }).then((data) =>{
+        if(type === 1){
+            let labelsInput = data.map(object => object.THANG)
+            let dataInput = data.map(object => object.DOANHTHU)
+            Init_LineChart(labelsInput, dataInput)
+        }
+    })
+}
 // ----------------MAIN ----------------
 if(checkAuthentication()){
     oneRestaurant = localStorage.getItem("oneRestaurant")
@@ -551,7 +569,8 @@ if(checkAuthentication()){
     Init_RaderChart()
     Init_DoughutChart()
     Init_BarChart()
-    Init_LineChart()
+    
+    CreateChart(1,url_LineChartRevenue, localStorage.getItem('ACCCODE'), oneRestaurant)
 }
 else{
     location.href = '../../../page-login.html'
